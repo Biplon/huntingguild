@@ -1,0 +1,2 @@
+# huntingguild
+spigot plugin
