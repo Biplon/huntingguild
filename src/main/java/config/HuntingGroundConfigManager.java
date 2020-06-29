@@ -36,7 +36,6 @@ public class HuntingGroundConfigManager
             cfg.set("general.huntinggroundname", huntinggroundname);
             cfg.set("general.world", worldname);
 
-
             try
             {
                 cfg.save(f);
@@ -52,29 +51,95 @@ public class HuntingGroundConfigManager
 
     }
 
-    public boolean saveHuntingGround()
+    public boolean removeHuntingGround(String world,String huntinggroundname)
+    {
+        return false;
+    }
+
+    public boolean removeHuntingGroundvalue(Configvalue configvalue,String value)
+    {
+        return false;
+    }
+
+    public boolean editHuntingGroundvalue(Configvalue configvalue,String valueold, String valuenew)
+    {
+        return false;
+    }
+
+    public boolean addHuntingGroundvalue(Configvalue configvalue,String[] values)
     {
         File f = new File(HuntingGuild.getInstance().getDataFolder()+"/huntinggrounds/", "FILENAME_HERE.yml");
 
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
 
-        cfg.set("inventory.keepplayerinventory", "false");
-        cfg.set("inventory.clearplayerinventoryonexit", "true");
+        switch (configvalue)
+        {
+            case keepplayerinventory:
+                cfg.set("inventory.keepplayerinventory", values[0]);
+            case clearplayerinventoryonexit:
+                cfg.set("inventory.clearplayerinventoryonexit", values[0]);
+            case maxplayer:
+                cfg.set("group.maxplayer", values[0]);
+            case grouplives:
+                cfg.set("group.grouplives", values[0]);
+            case commandplayerjoinhuntingground:
+                for (int i = 0; i < 100; i++)
+                {
+                    if (!cfg.contains("commands.playerjoinhuntingground" +i))
+                    {
+                        cfg.set("commands.playerjoinhuntingground"+i, values[0]);
+                        break;
+                    }
+                }
+                return false;
+            case commandplayerleavehuntingground001:
+                for (int i = 0; i < 100; i++)
+                {
+                    if (!cfg.contains("commands.playerleavehuntingground" +i))
+                    {
+                        cfg.set("commands.playerleavehuntingground"+i, values[0]);
+                        break;
+                    }
+                }
+                return false;
+            case spawnpoints:
+                for (int i = 0; i < 100; i++)
+                {
+                    if (!cfg.contains("spawnpoints." +i))
+                    {
+                        cfg.set("spawnpoints."+i +".name", values[0]);
+                        cfg.set("spawnpoints."+i +".cords", values[1]);
+                        break;
+                    }
+                }
+                return false;
+            case waves:
+                for (int i = 0; i < 100; i++)
+                {
+                    if (!cfg.contains("waves." +i))
+                    {
+                        cfg.set("waves."+i +".countdown", values[0]);
+                        break;
+                    }
+                }
+                return false;
+            case wavemob:
+                for (int i = 0; i < 100; i++)
+                {
+                    for (int j = 0; j < 100; j++)
+                    {
+                        if (!cfg.contains("waves." +i+".mob"+j))
+                        {
+                            cfg.set("waves." +i+".mob"+j+".name", values[0]);
+                            cfg.set("waves." +i+".mob"+j+".spawnpoint", values[1]);
+                            cfg.set("waves." +i+".mob"+j+".count", values[2]);
+                            break;
+                        }
+                    }
 
-        cfg.set("commands.playerjoinhuntingground001", "/lulululul");
-
-        cfg.set("commands.playerleavehuntingground001", "/nanananana batman");
-
-        cfg.set("group.maxplayer", "4");
-        cfg.set("group.grouplives", "8");
-
-        cfg.set("spawnpoints.001.name", "1");
-        cfg.set("spawnpoints.001.cords", "0,0,0");
-
-        cfg.set("waves.001.countdown", "0");
-        cfg.set("waves.001.mob001", "schnitzelpirat");
-        cfg.set("waves.001.mob001.spawnpoint", "schnitzelpirat");
-        cfg.set("waves.001.mob001.count", "42");
+                }
+                return false;
+        }
         try
         {
             cfg.save(f);
