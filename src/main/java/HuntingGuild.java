@@ -23,6 +23,7 @@ public class HuntingGuild extends JavaPlugin
             new HuntingGroundConfigManager();
             new HuntingGroundManager();
             ConfigManager.loadConfig();
+
         }
         catch (Exception e)
         {

@@ -2,3 +2,4 @@ name: Huntingguild
 author: Vestri
 description: huntingguild
 version: 0.1
+main: main.java.HuntingGuild
