@@ -1,18 +1,37 @@
 package main.java.huntingground.struct;
 
+import java.util.ArrayList;
+
 public class Wave
 {
-    public final int waveid;
+    public final String waveid;
 
     public final double waveprecountdown;
 
-    public final WaveMonster[] wavemonster;
+    public final ArrayList<WaveMonster> wavemonsters = new ArrayList();
 
-    public Wave(int waveid, double waveprecountdown, WaveMonster[] wavemonster)
+    public Wave(String waveid, double waveprecountdown)
     {
         this.waveid = waveid;
         this.waveprecountdown = waveprecountdown;
-        this.wavemonster = wavemonster;
     }
 
+    public void addWaveMonster(WaveMonster wavemonster)
+    {
+        wavemonsters.add(wavemonster);
+    }
+
+    public void removeWaveMonster(WaveMonster wavemonster)
+    {
+        wavemonsters.remove(wavemonster);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Wave{" +
+                "waveid=" + waveid +
+                ", waveprecountdown=" + waveprecountdown +
+                '}';
+    }
 }

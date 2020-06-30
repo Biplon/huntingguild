@@ -1,5 +1,67 @@
 name: Huntingguild
 author: Vestri
 description: huntingguild
-version: 0.1
+version: 0.2
 main: main.java.HuntingGuild
+permissions:
+  hg.editgrouplive:
+    description: change groupe live
+    default: op
+  hg.editcommands:
+    description: change hunting ground commands
+    default: op
+  hg.createhg:
+    description: create a new hunting ground
+    default: op
+  hg.clearinv:
+    description: set clear inventory for huntingground
+    default: op
+  hg.owninv:
+    description: set player own inventory for huntingground
+    default: op
+  hg.setmsp:
+    description: add/remove Spawnpoint for Mobs
+    default: op
+  hg.setwave:
+    description: add/remove wave for Mobs
+    default: op
+  hg.setwavemo:
+    description: add/remove Mobs for wave
+    default: op
+  hg.creategfhg:
+    description: add group for hunting ground
+    default: op
+  hg.hgsave:
+    description: save hunting ground
+    default: op
+commands:
+  editgrouplive:
+    description: change/get groupe live
+    usage: /editgrouplive <huntingroundname> [lives]
+  editcommands:
+    description: add/remove hunting ground commands. Playervariable in Command %player%. Commands without /
+    usage: /editcommands <huntingroundname> <win/lose/equip> [command] [remove]
+  createhg:
+    description: create a new hunting ground
+    usage: /createhg <huntingroundname> <world>
+  clearinv:
+    description: set clear inventory for huntingground
+    usage: /clearinv <huntingroundname> <true/false>
+  owninv:
+    description: set player own inventory for huntingground
+    usage: /owninv <huntingroundname> <true/false>
+  setmsp:
+    description: add/remove Spawnpoint for Mobs
+    usage: /setmsp <huntingroundname> <name> <x> <y> <z> [remove]
+  setwave:
+    description: add/remove wave for Mobs
+    usage: /setwave <huntingroundname> <number> <starttimer> [remove]
+  setwavemo:
+    description: add/remove Mobs for wave
+    usage: /setwavemo <huntingroundname> <waveid> <spawnpointname> <mobname> <amout> [remove]
+  creategfhg:
+    description: add group for hunting ground
+    usage: /creategfhg <huntingroundname> <size>
+  hgsave:
+    description: save hunting ground
+    usage: /hgsave <huntingroundname>

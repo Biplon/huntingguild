@@ -1,5 +1,39 @@
 package main.java.command;
 
-public class CommandHandler
+import main.java.HuntingGuild;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import static org.bukkit.Bukkit.getServer;
+
+public class CommandHandler implements CommandExecutor
 {
+
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args)
+    {
+        if (args.length == 1)
+        {
+            if (commandSender instanceof Player)
+            {
+                Player player = (Player) commandSender;
+                if (!player.hasPermission("pts.ptssaveplayer"))
+                {
+                    return false;
+                }
+            }
+            for(Player p : getServer().getOnlinePlayers())
+            {
+                if(p.getName().equals(args[0]))
+                {
+                    HuntingGuild.getInstance();
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
 }

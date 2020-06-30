@@ -1,5 +1,6 @@
 package main.java;
 
+import main.java.command.*;
 import main.java.config.ConfigManager;
 import main.java.config.HuntingGroundConfigManager;
 import main.java.group.GroupManager;
@@ -16,12 +17,13 @@ public class HuntingGuild extends JavaPlugin
     public void onEnable()
     {
         instance = this;
+        new GroupManager();
+        new ConfigManager();
+        new HuntingGroundConfigManager();
+        new HuntingGroundManager();
         try
         {
-            new GroupManager();
-            new ConfigManager();
-            new HuntingGroundConfigManager();
-            new HuntingGroundManager();
+
             ConfigManager.loadConfig();
 
         }
@@ -29,6 +31,16 @@ public class HuntingGuild extends JavaPlugin
         {
             e.printStackTrace();
         }
+        this.getCommand("editcommands").setExecutor(new CommandHuntingGroundCommands());
+        this.getCommand("editgrouplive").setExecutor(new CommandHuntingGroundGroupLive());
+        this.getCommand("createhg").setExecutor(new CommandHuntingGroundCreate());
+        this.getCommand("clearinv").setExecutor(new CommandClearInventory());
+        this.getCommand("owninv").setExecutor(new CommandPlayerOwnInventory());
+        this.getCommand("setmsp").setExecutor(new CommandSetMobSpawnpoint());
+        this.getCommand("setwave").setExecutor(new CommandWave());
+        this.getCommand("setwavemo").setExecutor(new CommandWaveMonster());
+        this.getCommand("creategfhg").setExecutor(new CommandCreateGroupForHG());
+        this.getCommand("hgsave").setExecutor(new CommandSaveHG());
         Bukkit.getLogger().info("[HuntingGuild] has been enabled!");
     }
 
