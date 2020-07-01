@@ -1,6 +1,7 @@
 package main.java.group;
 
 import main.java.PlayertoSql;
+import main.java.api.Playermanagement;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -54,8 +55,9 @@ public class Group
     {
         for (Player p: group)
         {
-            PlayertoSql.getInstance().getPlayerManager().savePlayer(p.getUniqueId().toString(), p.getInventory().getStorageContents(), p.getInventory().getArmorContents(), p.getInventory().getExtraContents(), p.getEnderChest().getContents());
-            PlayertoSql.getInstance().getPlayerManager().addDisablePlayerSave(p.getUniqueId().toString());
+            PlayertoSql.pm.savePlayerSync(p);
+            PlayertoSql.pm.disablePlayerSave(p);
+            PlayertoSql.pm.disablePlayerLoad(p);
         }
     }
 
@@ -63,8 +65,9 @@ public class Group
     {
         for (Player p: group)
         {
-            PlayertoSql.getInstance().getPlayerManager().onPlayerJoin(p);
-            PlayertoSql.getInstance().getPlayerManager().removeDisablePlayerSave(p.getUniqueId().toString());
+            PlayertoSql.pm.enablePlayerLoad(p);
+            PlayertoSql.pm.enablePlayerSave(p);
+            PlayertoSql.pm.loadPlayerSync(p);
         }
     }
 
