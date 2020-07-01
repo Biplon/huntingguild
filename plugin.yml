@@ -3,6 +3,7 @@ author: Vestri
 description: huntingguild
 version: 0.2
 main: main.java.HuntingGuild
+depend: [PlayertoSql]
 permissions:
   hg.editgrouplive:
     description: change groupe live
@@ -33,6 +34,18 @@ permissions:
     default: op
   hg.hgsave:
     description: save hunting ground
+    default: op
+  hg.hgmode:
+    description: change hunting ground mode
+    default: op
+  hg.startwave:
+    description: start wave
+    default: op
+  hg.starthg:
+    description: start hg
+    default: op
+  hg.joinhg:
+    description: join hg
     default: op
 commands:
   editgrouplive:
@@ -65,3 +78,15 @@ commands:
   hgsave:
     description: save hunting ground
     usage: /hgsave <huntingroundname>
+  hgmode:
+    description: change the hunting ground mode (live/build)
+    usage: /hgmode <huntingroundname>
+  startwave:
+    description: start wave
+    usage: /startwave <huntingroundname>
+  starthg:
+    description: start hg
+    usage: /starthg <huntingroundname>
+  joinhg:
+    description: join hg
+    usage: /joinhg <huntingroundname>

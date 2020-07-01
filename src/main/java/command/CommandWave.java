@@ -45,11 +45,11 @@ public class CommandWave implements CommandExecutor
                         return true;
                     }
                 }
-                else if (args.length == 3)
+                else if (args.length == 4)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addWave(args[1], args[2]))
+                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addWave(args[1], args[2],Boolean.parseBoolean(args[3])))
                         {
                             commandSender.sendMessage("Wave created:"+ args[1] +"|"+ args[2]);
                             return true;
@@ -66,7 +66,7 @@ public class CommandWave implements CommandExecutor
                         return true;
                     }
                 }
-                else if (args.length == 4)
+                else if (args.length == 5)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {

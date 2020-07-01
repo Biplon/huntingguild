@@ -8,12 +8,15 @@ public class Wave
 
     public final double waveprecountdown;
 
+    public final boolean autostart;
+
     public final ArrayList<WaveMonster> wavemonsters = new ArrayList();
 
-    public Wave(String waveid, double waveprecountdown)
+    public Wave(String waveid, double waveprecountdown,boolean autostart)
     {
         this.waveid = waveid;
         this.waveprecountdown = waveprecountdown;
+        this.autostart = autostart;
     }
 
     public void addWaveMonster(WaveMonster wavemonster)

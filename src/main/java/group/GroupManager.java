@@ -6,14 +6,9 @@ public class GroupManager
 
     public GroupManager()
     {
-        if(instance != null)
-        {
+
             instance = this;
-        }
-        else
-        {
-            return;
-        }
+
     }
 
 

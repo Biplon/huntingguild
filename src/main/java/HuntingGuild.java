@@ -3,10 +3,12 @@ package main.java;
 import main.java.command.*;
 import main.java.config.ConfigManager;
 import main.java.config.HuntingGroundConfigManager;
+import main.java.event.OnEntityDeath;
 import main.java.group.GroupManager;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HuntingGuild extends JavaPlugin
@@ -31,6 +33,18 @@ public class HuntingGuild extends JavaPlugin
         {
             e.printStackTrace();
         }
+        Bukkit.getLogger().info("[HuntingGuild] register commands!");
+        regCommands();
+        Bukkit.getLogger().info("[HuntingGuild] commands registered!");
+        Bukkit.getLogger().info("[HuntingGuild] load hunting grounds!");
+        HuntingGroundManager.getInstance().loadHuntingGrounds();
+        Bukkit.getLogger().info("[HuntingGuild] hunting grounds loaded!");
+        regEvents();
+        Bukkit.getLogger().info("[HuntingGuild] has been enabled!");
+    }
+
+    private void regCommands()
+    {
         this.getCommand("editcommands").setExecutor(new CommandHuntingGroundCommands());
         this.getCommand("editgrouplive").setExecutor(new CommandHuntingGroundGroupLive());
         this.getCommand("createhg").setExecutor(new CommandHuntingGroundCreate());
@@ -41,7 +55,16 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("setwavemo").setExecutor(new CommandWaveMonster());
         this.getCommand("creategfhg").setExecutor(new CommandCreateGroupForHG());
         this.getCommand("hgsave").setExecutor(new CommandSaveHG());
-        Bukkit.getLogger().info("[HuntingGuild] has been enabled!");
+        this.getCommand("hgmode").setExecutor(new CommandChangeHGMode());
+        this.getCommand("startwave").setExecutor(new CommandStartWave());
+        this.getCommand("starthg").setExecutor(new CommandStartHG());
+        this.getCommand("joinhg").setExecutor(new CommandJoinHG());
+    }
+
+    private void regEvents()
+    {
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new OnEntityDeath(), this);
     }
 
     @Override

@@ -1,5 +1,5 @@
 general:
-  #xxx
-  xxx: true
+  #spawncommand
+  spawncommand: mo lspawn <type> <number> <x> <y> <z> [world]
 
 

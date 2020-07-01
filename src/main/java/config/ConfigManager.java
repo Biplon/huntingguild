@@ -8,16 +8,13 @@ public class ConfigManager
 {
     static ConfigManager instance;
 
+    public static String spawncommand = "mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}";
+
     public ConfigManager()
     {
-        if(instance != null)
-        {
+
             instance = this;
-        }
-        else
-        {
-            return;
-        }
+
     }
 
 
@@ -39,11 +36,26 @@ public class ConfigManager
         {
             HuntingGuild.getInstance().getLogger().info("Loading the config ...");
             HuntingGuild.getInstance().getConfig().load(configFile);
+            //spawncommand = getConfigvalueString("general.spawncommand");
         }
         catch (Exception e)
         {
             HuntingGuild.getInstance().getLogger().severe("Could not load the config! Error: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+
+    public static String getConfigvalueString(String value)
+    {
+        if (!HuntingGuild.getInstance().getConfig().contains(value))
+        {
+            HuntingGuild.getInstance().getLogger().severe("Value: " + value + " not found in config.yml of" + HuntingGuild.getInstance().getName());
+            return "valuenotfound";
+        }
+        else
+        {
+            return HuntingGuild.getInstance().getConfig().getString(value);
         }
     }
 }
