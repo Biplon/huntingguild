@@ -29,11 +29,11 @@ public class CommandJoinHG implements CommandExecutor
                         if (!HuntingGroundManager.getInstance().getHuntinground(args[0]).hggroup.isFull())
                         {
                             HuntingGroundManager.getInstance().getHuntinground(args[0]).hggroup.addPlayer(player);
-                            commandSender.sendMessage("Group joined!");
+                            commandSender.sendMessage("Group joined! For: "+args[0]);
                         }
                         else
                         {
-                            commandSender.sendMessage("Group full!");
+                            commandSender.sendMessage("Group full! For: "+args[0]);
                         }
                         return true;
                     }

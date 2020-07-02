@@ -57,66 +57,70 @@ public class CommandHuntingGroundCommands implements CommandExecutor
                         return true;
                     }
                 }
-                else if (args.length == 3)
+                else if (args.length > 2)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        if (args[1].equals("win"))
+                        String commandvalue = "";
+                        if (args[args.length-1].equalsIgnoreCase("remove"))
                         {
-                            HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addHuntinggroundwincommands(args[2]);
-                            commandSender.sendMessage("Command added:" + args[2]);
-                            return true;
-                        }
-                        else if (args[1].equals("lose"))
-                        {
-                            HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addHuntinggroundlosecommands(args[2]);
-                            commandSender.sendMessage("Command added:" + args[2]);
-                            return true;
-                        }
-                        else if (args[1].equals("start"))
-                        {
-                            HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addEquipcommands(args[2]);
-                            commandSender.sendMessage("Command added:" + args[2]);
-                            return true;
-                        }
-                        else
-                        {
-                            commandSender.sendMessage("Type not found:" + args[1]);
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        commandSender.sendMessage("No hunting ground found:" + args[0] + " (hunting ground not exist or is not in build mode)");
-                        return true;
-                    }
-                }
-                else if (args.length == 4)
-                {
-                    if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
-                    {
-                        if (args[1].equals("win"))
-                        {
-                            HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeHuntinggroundwincommands(args[2]);
-                            commandSender.sendMessage("Command removed: "+ args[2]);
-                            return true;
-                        }
-                        else if (args[1].equals("lose"))
-                        {
-                            HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeHuntinggroundlosecommands(args[2]);
-                            commandSender.sendMessage("Command removed: "+ args[2]);
-                            return true;
-                        }
-                        else if (args[1].equals("start"))
-                        {
-                            HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeEquipcommands(args[2]);
-                            commandSender.sendMessage("Command removed: "+ args[2]);
-                            return true;
+                            for (int i = 1; i < args.length-1; i++)
+                            {
+                                commandvalue +=args[i]+" ";
+                            }
+                            if (args[1].equals("win"))
+                            {
+                                HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeHuntinggroundwincommands(commandvalue);
+                                commandSender.sendMessage("Command removed: "+ commandvalue);
+                                return true;
+                            }
+                            else if (args[1].equals("lose"))
+                            {
+                                HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeHuntinggroundlosecommands(commandvalue);
+                                commandSender.sendMessage("Command removed: "+ commandvalue);
+                                return true;
+                            }
+                            else if (args[1].equals("start"))
+                            {
+                                HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeEquipcommands(commandvalue);
+                                commandSender.sendMessage("Command removed: "+ commandvalue);
+                                return true;
+                            }
+                            else
+                            {
+                                commandSender.sendMessage("Type not found:" + args[1]);
+                                return false;
+                            }
                         }
                         else
                         {
-                            commandSender.sendMessage("Type not found:" + args[1]);
-                            return false;
+                            for (int i = 1; i < args.length; i++)
+                            {
+                                commandvalue +=args[i]+" ";
+                            }
+                            if (args[1].equals("win"))
+                            {
+                                HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addHuntinggroundwincommands(commandvalue);
+                                commandSender.sendMessage("Command added:" + commandvalue);
+                                return true;
+                            }
+                            else if (args[1].equals("lose"))
+                            {
+                                HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addHuntinggroundlosecommands(commandvalue);
+                                commandSender.sendMessage("Command added:" + commandvalue);
+                                return true;
+                            }
+                            else if (args[1].equals("start"))
+                            {
+                                HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addEquipcommands(commandvalue);
+                                commandSender.sendMessage("Command added:" + commandvalue);
+                                return true;
+                            }
+                            else
+                            {
+                                commandSender.sendMessage("Type not found:" + args[1]);
+                                return false;
+                            }
                         }
                     }
                     else

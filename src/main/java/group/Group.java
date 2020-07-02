@@ -19,9 +19,6 @@ public class Group
         inven = new ItemStack[groupsize];
     }
 
-
-
-
     public boolean addPlayer(Player p)
     {
         if (!isFull())
@@ -55,9 +52,9 @@ public class Group
     {
         for (Player p: group)
         {
-            PlayertoSql.pm.savePlayerSync(p);
-            PlayertoSql.pm.disablePlayerSave(p);
-            PlayertoSql.pm.disablePlayerLoad(p);
+            Playermanagement.getInstance().savePlayerSync(p);
+            Playermanagement.getInstance().disablePlayerSave(p);
+            Playermanagement.getInstance().disablePlayerLoad(p);
         }
     }
 
@@ -65,9 +62,9 @@ public class Group
     {
         for (Player p: group)
         {
-            PlayertoSql.pm.enablePlayerLoad(p);
-            PlayertoSql.pm.enablePlayerSave(p);
-            PlayertoSql.pm.loadPlayerSync(p);
+            Playermanagement.getInstance().enablePlayerLoad(p);
+            Playermanagement.getInstance().enablePlayerSave(p);
+            Playermanagement.getInstance().loadPlayerSync(p);
         }
     }
 
