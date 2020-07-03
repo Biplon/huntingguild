@@ -39,7 +39,7 @@ public class HuntingGround
 
     private final ArrayList<String> huntinggroundwincommands = new ArrayList();
 
-    public final ArrayList<Creature> enemylist = new ArrayList();
+    public ArrayList<Creature> enemylist = new ArrayList();
 
     public boolean clearinventory;
 
@@ -47,7 +47,7 @@ public class HuntingGround
 
     public boolean isinuse = false;
 
-    private boolean iswaveactive = false;
+    public boolean iswaveactive = false;
 
     private int wavecount;
 
@@ -129,10 +129,12 @@ public class HuntingGround
         isnext = true;
         count = 0;
 
-        boolean isnext2 = true;
+        boolean isnext2;
         int count2 = 0;
         while (isnext)
         {
+            isnext2 = true;
+            count2 = 0;
             if (cfg.getString("waves." + count + ".id") != null)
             {
                 waves.add(new Wave(cfg.getString("waves." + count + ".id"), Double.parseDouble(Objects.requireNonNull(cfg.getString("waves." + count + ".cooldown"))), Boolean.parseBoolean(Objects.requireNonNull(cfg.getString("waves." + count + ".autostart")))));
@@ -171,6 +173,7 @@ public class HuntingGround
 
     public boolean starthuntingground()
     {
+        sendMessage(waves.size()+"");
         if (hggroup.isFull())
         {
             isinuse = true;
@@ -190,6 +193,10 @@ public class HuntingGround
                 }
             }
             grouplivescurrent = grouplives;
+            if (waves.get(0).autostart)
+            {
+                startWave();
+            }
             return true;
         }
         return false;
@@ -200,7 +207,8 @@ public class HuntingGround
     {
         if (!playerowninventory)
         {
-            hggroup.restoreInventory();
+            sendMessage("wwwwww");
+            sendMessage(hggroup.restoreInventory()+"");
         }
         for (Player p : hggroup.group)
         {
@@ -215,7 +223,7 @@ public class HuntingGround
             {
                 for (String s : huntinggroundlosecommands)
                 {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));
+                   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));
                 }
             }
 
@@ -249,24 +257,27 @@ public class HuntingGround
 
     public boolean startWave()
     {
+        sendMessage("|"+ iswaveactive);
         if (!iswaveactive)
         {
+
+            sendMessage("|"+ waves.get(wavecount).wavemonsters.size());
             for (WaveMonster wm : waves.get(wavecount).wavemonsters)
             {
-
+                sendMessage("|"+ wm.mobname);
                 // "mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}"
 
                 data.put("type", wm.mobname);
-                data.put("number", "" + wm.amount);
+              //  data.put("number", "" + wm.amount);
                 data.put("x", "" + wm.sp.posx);
                 data.put("y", "" + wm.sp.posy);
                 data.put("z", "" + wm.sp.posz);
-                data.put("world", world);
+               // data.put("world", world);
                 String formattedString = StrSubstitutor.replace(ConfigManager.spawncommand, data);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedString);
                 data.clear();
-                wavecount++;
             }
+            wavecount++;
             GetEnemys();
             iswaveactive = true;
             return true;
@@ -295,17 +306,27 @@ public class HuntingGround
 
     public void clearEnemyList()
     {
-        enemylist.removeAll(Collections.singleton(null));
-        sendMessage("lululu");
+        ArrayList<Creature> tmp = new ArrayList<>();
         checkIsWaveClear();
+        for (Creature e:enemylist)
+        {
+            if (!e.isDead())
+            {
+                tmp.add(e);
+            }
+        }
+        enemylist = tmp;
     }
 
 
     public void checkIsWaveClear()
     {
-        if (enemylist.size() == 0)
+        sendMessage(enemylist.size()+"|"+ iswaveactive);
+        if (enemylist.size() == 0 && iswaveactive)
         {
+            iswaveactive = false;
             sendMessage("wave clear");
+            sendMessage(wavecount+"|"+ waves.size());
             if (wavecount >= waves.size())
             {
                 sendMessage("hg clear");
@@ -316,8 +337,6 @@ public class HuntingGround
                 sendMessage("next wave");
                 startWave();
             }
-            iswaveactive = false;
-
         }
     }
 

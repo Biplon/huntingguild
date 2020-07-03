@@ -24,7 +24,7 @@ public class CommandHuntingGroundCreate implements CommandExecutor
             {
                 if (args.length == 2)
                 {
-                    if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) == null && HuntingGroundManager.getInstance().getHuntinground(args[0]) == null)
+                    if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) == null && HuntingGroundManager.getInstance().getHuntingground(args[0]) == null)
                     {
                         if (Bukkit.getServer().getWorld(args[1]) != null)
                         {

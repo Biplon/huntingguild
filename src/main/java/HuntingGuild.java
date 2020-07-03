@@ -3,8 +3,10 @@ package main.java;
 import main.java.command.*;
 import main.java.config.ConfigManager;
 import main.java.config.HuntingGroundConfigManager;
+import main.java.event.InventoryClick;
 import main.java.event.OnEntityDeath;
 import main.java.group.GroupManager;
+import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -23,6 +25,7 @@ public class HuntingGuild extends JavaPlugin
         new ConfigManager();
         new HuntingGroundConfigManager();
         new HuntingGroundManager();
+        new GUIManager();
         try
         {
 
@@ -59,12 +62,14 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("startwave").setExecutor(new CommandStartWave());
         this.getCommand("starthg").setExecutor(new CommandStartHG());
         this.getCommand("joinhg").setExecutor(new CommandJoinHG());
+        this.getCommand("leavehg").setExecutor(new CommandLeaveHG());
     }
 
     private void regEvents()
     {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new OnEntityDeath(), this);
+        pm.registerEvents(new InventoryClick(), this);
     }
 
     @Override

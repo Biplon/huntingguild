@@ -2,6 +2,7 @@ package main.java.group;
 
 import main.java.PlayertoSql;
 import main.java.api.Playermanagement;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -52,20 +53,22 @@ public class Group
     {
         for (Player p: group)
         {
-            Playermanagement.getInstance().savePlayerSync(p);
+            Playermanagement.getInstance().savePlayerIgnoreDisableSync(p);
             Playermanagement.getInstance().disablePlayerSave(p);
             Playermanagement.getInstance().disablePlayerLoad(p);
         }
     }
 
-    public void restoreInventory()
+    public boolean restoreInventory()
     {
         for (Player p: group)
         {
+            Bukkit.getLogger().info(p.getDisplayName());
+            Playermanagement.getInstance().loadPlayerIgnoreDisableSync(p);
             Playermanagement.getInstance().enablePlayerLoad(p);
             Playermanagement.getInstance().enablePlayerSave(p);
-            Playermanagement.getInstance().loadPlayerSync(p);
         }
+        return true;
     }
 
     public void clearGroup()
@@ -86,6 +89,19 @@ public class Group
             }
         }
         return true;
+    }
+
+    public int getFullSlots()
+    {
+        int full = 0;
+        for (int i = 0; i < group.length; i++)
+        {
+            if (group[i] != null)
+            {
+                full++;
+            }
+        }
+        return full;
     }
 
     public int getGroupSize()

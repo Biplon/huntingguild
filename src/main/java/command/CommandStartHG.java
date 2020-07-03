@@ -23,9 +23,9 @@ public class CommandStartHG implements CommandExecutor
             {
                 if (args.length == 1)
                 {
-                    if (HuntingGroundManager.getInstance().getHuntinground(args[0]) != null)
+                    if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
                     {
-                        if (!HuntingGroundManager.getInstance().getHuntinground(args[0]).starthuntingground())
+                        if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).starthuntingground())
                         {
                             commandSender.sendMessage("Hunting ground can not start. Group not full!");
                         }

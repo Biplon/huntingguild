@@ -1,13 +1,12 @@
 package main.java.command;
 
-import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandJoinHG implements CommandExecutor
+public class CommandLeaveHG implements CommandExecutor
 {
 
     @Override
@@ -16,35 +15,30 @@ public class CommandJoinHG implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.joinhg"))
+            if (!player.hasPermission("hg.leavehg"))
             {
                 return false;
             }
             else
             {
-                if (args.length == 0)
+                if (args.length == 1)
                 {
-                    GUIManager.getInstance().joingui.sethg();
-                    player.openInventory(GUIManager.getInstance().joingui.getInventory());
-                    return true;
-                }
-                else if(args.length == 1)
-                {
+
                     if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
                     {
-                        if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.isFull())
+                        if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).isinuse)
                         {
-                            HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.addPlayer(player);
-                            commandSender.sendMessage("Group joined! For: "+args[0]);
+                            HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.removePlayer(player);
+                            commandSender.sendMessage("Group leaved! For: "+args[0]);
                         }
                         else
                         {
-                            commandSender.sendMessage("Group full! For: "+args[0]);
+                            commandSender.sendMessage("Can not leave if Hunting ground is active");
                         }
                         return true;
                     }
-                }
 
+                }
             }
         }
         return false;

@@ -24,9 +24,9 @@ public class CommandStartWave implements CommandExecutor
                 if (args.length == 1)
                 {
 
-                    if (HuntingGroundManager.getInstance().getHuntinground(args[0]) != null)
+                    if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
                     {
-                        HuntingGroundManager.getInstance().getHuntinground(args[0]).startWave();
+                        HuntingGroundManager.getInstance().getHuntingground(args[0]).startWave();
                     }
                     return true;
 

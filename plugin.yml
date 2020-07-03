@@ -1,7 +1,8 @@
 name: Huntingguild
 author: Vestri
 description: huntingguild
-version: 0.5
+version: 0.6
+api-version: 1.15
 main: main.java.HuntingGuild
 depend: [PlayertoSql]
 permissions:
@@ -47,6 +48,9 @@ permissions:
   hg.joinhg:
     description: join hg
     default: op
+  hg.leavehg:
+    description: leave hg
+    default: op
 commands:
   editgrouplive:
     description: change/get groupe live
@@ -90,3 +94,6 @@ commands:
   joinhg:
     description: join hg
     usage: /joinhg <huntingroundname>
+  leavehg:
+    description: leave hg
+    usage: /leavehg <huntingroundname>

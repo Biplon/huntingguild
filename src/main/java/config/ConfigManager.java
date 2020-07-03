@@ -7,9 +7,9 @@ import java.io.File;
 public class ConfigManager
 {
     static ConfigManager instance;
-
-    public static String spawncommand = "mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}";
-
+    //"mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}";
+    public static String spawncommand = "summon ${type} ${x} ${y} ${z}";
+    //summon Skeleton ~ ~ ~ {SkeletonType:1}
     public ConfigManager()
     {
 

@@ -1,6 +1,7 @@
 package main.java.huntingground;
 
 import main.java.HuntingGuild;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -58,6 +59,8 @@ public class HuntingGroundManager
         }
     }
 
+
+
     private static void search(final String pattern, final File folder, List<String> result)
     {
         for (final File f : folder.listFiles())
@@ -79,7 +82,7 @@ public class HuntingGroundManager
         }
     }
 
-    public HuntingGround getHuntinground(String huntinggroundname)
+    public HuntingGround getHuntingground(String huntinggroundname)
     {
         for (HuntingGround item : huntingGrounds)
         {
@@ -89,6 +92,19 @@ public class HuntingGroundManager
             }
         }
         return null;
+    }
+
+    public HuntingGround getHuntingground(int index)
+    {
+        if (huntingGrounds.size() > index)
+        {
+            return huntingGrounds.get(index);
+        }
+        else
+        {
+            return null;
+        }
+
     }
 
     public HuntingGroundBuilder getHuntingGroundBuilder(String huntinggroundname)
@@ -107,14 +123,14 @@ public class HuntingGroundManager
     public boolean changeHuntingGroundMode(String hgname)
     {
         File file;
-        if (getHuntinground(hgname) != null)
+        if (getHuntingground(hgname) != null)
         {
-            if (!getHuntinground(hgname).isinuse)
+            if (!getHuntingground(hgname).isinuse)
             {
                 file = new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml");
                 if (file.renameTo(new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/" + hgname + ".yml")))
                 {
-                    huntingGrounds.remove(getHuntinground(hgname));
+                    huntingGrounds.remove(getHuntingground(hgname));
                     huntingGroundBuilders.add(new HuntingGroundBuilder(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/" + hgname + ".yml"));
                     return true;
                 }
@@ -181,7 +197,10 @@ public class HuntingGroundManager
             {
                 for (HuntingGround hg: huntingGrounds)
                 {
-                    hg.clearEnemyList();
+                    if (hg.isinuse && hg.iswaveactive)
+                    {
+                        hg.clearEnemyList();
+                    }
                 }
             }
 
