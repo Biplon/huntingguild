@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandSetMobSpawnpoint implements CommandExecutor
+public class CommandSetPlayerSpawnpoint implements CommandExecutor
 {
 
     @Override
@@ -16,7 +16,7 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.setmsp"))
+            if (!player.hasPermission("hg.setpsp"))
             {
                 return false;
             }
@@ -26,14 +26,14 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().size() >= Integer.parseInt(args[1]))
+                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getPlayerSpawnpoints().size() >= Integer.parseInt(args[1]))
                         {
-                           ;
-                            commandSender.sendMessage("Spawnpoint info: " +  HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().get(Integer.parseInt(args[1])).toString());
+                            ;
+                            commandSender.sendMessage("Playerspawnpoint info: " +  HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getPlayerSpawnpoints().get(Integer.parseInt(args[1])).toString());
                             return true;
 
                         }
-                        commandSender.sendMessage("Spawnpoint not found");
+                        commandSender.sendMessage("Playerspawnpoint not found");
                         return true;
 
                     }
@@ -47,9 +47,9 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        Spawnpoint sp = new Spawnpoint(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().size(), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
-                        HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addSpawnpoint(sp);
-                        commandSender.sendMessage("Spawnpoint create: " + sp.toString());
+                        Spawnpoint sp = new Spawnpoint(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getPlayerSpawnpoints().size(), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+                        HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addPlayerSpawnpoint(sp);
+                        commandSender.sendMessage("Playerspawnpoint create: " + sp.toString());
                         return true;
                     }
                     else
@@ -62,14 +62,14 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeMobSpawnpoint(Integer.parseInt(args[1])))
+                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removePlayerSpawnpoint(Integer.parseInt(args[1])))
                         {
-                            commandSender.sendMessage("Spawnpoint deleted: " + args[1]);
+                            commandSender.sendMessage("Playerspawnpoint deleted: " + args[1]);
                             return true;
                         }
                         else
                         {
-                            commandSender.sendMessage("Spawnpoint not found.");
+                            commandSender.sendMessage("Playerspawnpoint not found.");
                             return true;
                         }
 

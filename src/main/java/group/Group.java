@@ -3,21 +3,28 @@ package main.java.group;
 import main.java.PlayertoSql;
 import main.java.api.Playermanagement;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Arrays;
+
 public class Group
 {
     public Player[] group;
 
-    public ItemStack[] inven;
+    public boolean[] ready;
+
+    public Location[] loc;
 
     public Group(int groupsize)
     {
         group = new Player[groupsize];
-        inven = new ItemStack[groupsize];
+        ready = new boolean[groupsize];
+        loc = new Location[groupsize];
+        Arrays.fill(ready, false);
     }
 
     public boolean addPlayer(Player p)
@@ -36,6 +43,14 @@ public class Group
         return false;
     }
 
+    public void savePlayerloc()
+    {
+        for (int i = 0; i < group.length; i++)
+        {
+            loc[i] = group[i].getLocation();
+        }
+    }
+
     public boolean removePlayer(Player p)
     {
         for (int i = 0; i < group.length; i++)
@@ -49,9 +64,28 @@ public class Group
         return false;
     }
 
+    public boolean setPlayerready(Player p)
+    {
+        for (int i = 0; i < group.length; i++)
+        {
+            if (group[i] == p)
+            {
+                ready[i] = true;
+            }
+        }
+        for (boolean b : ready)
+        {
+            if (!b)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void saveInventory()
     {
-        for (Player p: group)
+        for (Player p : group)
         {
             Playermanagement.getInstance().savePlayerIgnoreDisableSync(p);
             Playermanagement.getInstance().disablePlayerSave(p);
@@ -61,7 +95,7 @@ public class Group
 
     public boolean restoreInventory()
     {
-        for (Player p: group)
+        for (Player p : group)
         {
             Bukkit.getLogger().info(p.getDisplayName());
             Playermanagement.getInstance().loadPlayerIgnoreDisableSync(p);
@@ -73,17 +107,15 @@ public class Group
 
     public void clearGroup()
     {
-        for (int i = 0; i < group.length; i++)
-        {
-            group[i] = null;
-        }
+        Arrays.fill(group, null);
+        Arrays.fill(ready, false);
     }
 
     public boolean isFull()
     {
-        for (int i = 0; i < group.length; i++)
+        for (Player player : group)
         {
-            if (group[i] == null)
+            if (player == null)
             {
                 return false;
             }
@@ -94,9 +126,9 @@ public class Group
     public int getFullSlots()
     {
         int full = 0;
-        for (int i = 0; i < group.length; i++)
+        for (Player player : group)
         {
-            if (group[i] != null)
+            if (player != null)
             {
                 full++;
             }
@@ -112,9 +144,9 @@ public class Group
     public int getFreeGroupSlots()
     {
         int freeslots = 0;
-        for (int i = 0; i < group.length; i++)
+        for (Player player : group)
         {
-            if (group[i] == null)
+            if (player == null)
             {
                 freeslots++;
             }

@@ -39,6 +39,8 @@ public class HuntingGround
 
     private final ArrayList<String> huntinggroundwincommands = new ArrayList();
 
+    private final ArrayList<Spawnpoint> huntinggroundplayerspawns = new ArrayList();
+
     public ArrayList<Creature> enemylist = new ArrayList();
 
     public boolean clearinventory;
@@ -114,10 +116,27 @@ public class HuntingGround
         String[] coords;
         while (isnext)
         {
-            if (cfg.getString("spawnpoints." + count + ".name") != null)
+            if (cfg.getString("spawnpoints." + count + ".coords") != null)
             {
                 coords = cfg.getString("spawnpoints." + count + ".coords").split(",");
-                spawnpoints.add(new Spawnpoint(cfg.getString("spawnpoints." + count + ".name"), Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                spawnpoints.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                count++;
+            }
+            else
+            {
+                isnext = false;
+            }
+        }
+
+        isnext = true;
+        count = 0;
+        while (isnext)
+        {
+            if (cfg.getString("playerspawnpoints."+count+".coords") !=null)
+            {
+                Bukkit.getLogger().info(cfg.getString("playerspawnpoints."+count+".coords"));
+                coords = cfg.getString("playerspawnpoints."+count+".coords").split(",");
+                huntinggroundplayerspawns.add(new Spawnpoint(count,Integer.parseInt(coords[0]),Integer.parseInt(coords[1]),Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -135,14 +154,14 @@ public class HuntingGround
         {
             isnext2 = true;
             count2 = 0;
-            if (cfg.getString("waves." + count + ".id") != null)
+            if (cfg.getString("waves." + count + ".cooldown") != null)
             {
-                waves.add(new Wave(cfg.getString("waves." + count + ".id"), Double.parseDouble(Objects.requireNonNull(cfg.getString("waves." + count + ".cooldown"))), Boolean.parseBoolean(Objects.requireNonNull(cfg.getString("waves." + count + ".autostart")))));
+                waves.add(new Wave(count, Double.parseDouble(Objects.requireNonNull(cfg.getString("waves." + count + ".cooldown"))), Boolean.parseBoolean(Objects.requireNonNull(cfg.getString("waves." + count + ".autostart")))));
                 while (isnext2)
                 {
                     if (cfg.getString("waves." + count + ".monster." + count2 + ".name") != null)
                     {
-                        waves.get(count).addWaveMonster(new WaveMonster(cfg.getString("waves." + count + ".monster." + count2 + ".name"), cfg.getInt("waves." + count + ".monster." + count2 + ".amount"), getSpawnpoint(cfg.getString("waves." + count + ".monster." + count2 + ".spawnpoint"))));
+                        waves.get(count).addWaveMonster(new WaveMonster(cfg.getString("waves." + count + ".monster." + count2 + ".name"), cfg.getInt("waves." + count + ".monster." + count2 + ".amount"), getSpawnpoint(cfg.getInt("waves." + count + ".monster." + count2 + ".spawnpoint"))));
                         count2++;
                     }
                     else
@@ -159,24 +178,38 @@ public class HuntingGround
         }
     }
 
-    private Spawnpoint getSpawnpoint(String name)
+    private Spawnpoint getSpawnpoint(int index)
     {
-        for (Spawnpoint sp : spawnpoints)
+       return spawnpoints.size() >= index ? spawnpoints.get(index) : null;
+    }
+
+    public void teleportPlayerToHG()
+    {
+        Location loc = new Location(Bukkit.getWorld(world),huntinggroundplayerspawns.get(0).posx,huntinggroundplayerspawns.get(0).posy,huntinggroundplayerspawns.get(0).posz);
+
+        for (Player p: hggroup.group)
         {
-            if (sp.spawnpointname.equals(name))
-            {
-                return sp;
-            }
+            p.teleport(loc);
         }
-        return null;
+    }
+
+    public void teleportPlayerBack()
+    {
+        for (int i = 0; i < hggroup.group.length; i++)
+        {
+            hggroup.group[i].teleport(hggroup.loc[i]);
+        }
     }
 
     public boolean starthuntingground()
     {
-        sendMessage(waves.size()+"");
         if (hggroup.isFull())
         {
             isinuse = true;
+
+            hggroup.savePlayerloc();
+            teleportPlayerToHG();
+
             if (!playerowninventory)
             {
                 hggroup.saveInventory();
@@ -193,22 +226,24 @@ public class HuntingGround
                 }
             }
             grouplivescurrent = grouplives;
+            /*
             if (waves.get(0).autostart)
             {
                 startWave();
             }
+
+             */
             return true;
         }
         return false;
     }
 
-
     public boolean endhuntinground(boolean win)
     {
+        teleportPlayerBack();
         if (!playerowninventory)
         {
-            sendMessage("wwwwww");
-            sendMessage(hggroup.restoreInventory()+"");
+            hggroup.restoreInventory();
         }
         for (Player p : hggroup.group)
         {
@@ -257,14 +292,10 @@ public class HuntingGround
 
     public boolean startWave()
     {
-        sendMessage("|"+ iswaveactive);
         if (!iswaveactive)
         {
-
-            sendMessage("|"+ waves.get(wavecount).wavemonsters.size());
             for (WaveMonster wm : waves.get(wavecount).wavemonsters)
             {
-                sendMessage("|"+ wm.mobname);
                 // "mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}"
 
                 data.put("type", wm.mobname);
@@ -321,12 +352,10 @@ public class HuntingGround
 
     public void checkIsWaveClear()
     {
-        sendMessage(enemylist.size()+"|"+ iswaveactive);
         if (enemylist.size() == 0 && iswaveactive)
         {
             iswaveactive = false;
             sendMessage("wave clear");
-            sendMessage(wavecount+"|"+ waves.size());
             if (wavecount >= waves.size())
             {
                 sendMessage("hg clear");

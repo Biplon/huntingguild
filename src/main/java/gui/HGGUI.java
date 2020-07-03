@@ -46,8 +46,16 @@ public class HGGUI
         {
             if (HuntingGroundManager.getInstance().getHuntingground(y) != null)
             {
-                inv.setItem(i, createGuiItem(Material.GREEN_DYE,HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname,HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots()+"/"+HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() +  "Player" ,"Own equip: "+HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                if (!HuntingGroundManager.getInstance().getHuntingground(y).isinuse)
+                {
+                    inv.setItem(i, createGuiItem(Material.GREEN_DYE,HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname,HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots()+"/"+HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() +  "Player" ,"Own equip: "+HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                }
+                else
+                {
+                    inv.setItem(i, createGuiItem(Material.RED_DYE,HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname,HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots()+"/"+HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() +  "Player" ,"Own equip: "+HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                }
                 y++;
+
             }
             else
             {
@@ -59,7 +67,14 @@ public class HGGUI
         {
             if (HuntingGroundManager.getInstance().getHuntingground(y) != null)
             {
-                inv.setItem(i, createGuiItem(Material.GREEN_DYE,HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname,HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots()+"/"+HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() +  "Player" ,"Own equip: "+HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                if (!HuntingGroundManager.getInstance().getHuntingground(y).isinuse)
+                {
+                    inv.setItem(i, createGuiItem(Material.GREEN_DYE,HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname,HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots()+"/"+HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() +  "Player" ,"Own equip: "+HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                }
+                else
+                {
+                    inv.setItem(i, createGuiItem(Material.RED_DYE,HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname,HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots()+"/"+HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() +  "Player" ,"Own equip: "+HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                }
                 y++;
             }
             else

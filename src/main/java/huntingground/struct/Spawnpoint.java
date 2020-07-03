@@ -2,7 +2,7 @@ package main.java.huntingground.struct;
 
 public class Spawnpoint
 {
-    public final String spawnpointname;
+    public final int id;
 
     public final int posx;
 
@@ -10,19 +10,19 @@ public class Spawnpoint
 
     public final int posz;
 
-    public Spawnpoint(String spawnpointname,int posx,int posy, int posz)
+    public Spawnpoint(int id, int posx, int posy, int posz)
     {
-       this.spawnpointname = spawnpointname;
-       this.posx = posx;
-       this.posy = posy;
-       this.posz = posz;
+        this.id = id;
+        this.posx = posx;
+        this.posy = posy;
+        this.posz = posz;
     }
 
     @Override
     public String toString()
     {
         return "Spawnpoint{" +
-                "spawnpointname='" + spawnpointname + '\'' +
+                "  id=" + id +
                 ", posx=" + posx +
                 ", posy=" + posy +
                 ", posz=" + posz +

@@ -54,6 +54,7 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("clearinv").setExecutor(new CommandClearInventory());
         this.getCommand("owninv").setExecutor(new CommandPlayerOwnInventory());
         this.getCommand("setmsp").setExecutor(new CommandSetMobSpawnpoint());
+        this.getCommand("setpsp").setExecutor(new CommandSetPlayerSpawnpoint());
         this.getCommand("setwave").setExecutor(new CommandWave());
         this.getCommand("setwavemo").setExecutor(new CommandWaveMonster());
         this.getCommand("creategfhg").setExecutor(new CommandCreateGroupForHG());
@@ -63,6 +64,7 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("starthg").setExecutor(new CommandStartHG());
         this.getCommand("joinhg").setExecutor(new CommandJoinHG());
         this.getCommand("leavehg").setExecutor(new CommandLeaveHG());
+        this.getCommand("plready").setExecutor(new CommandSetPlayerReady());
     }
 
     private void regEvents()

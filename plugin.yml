@@ -1,7 +1,7 @@
 name: Huntingguild
 author: Vestri
 description: huntingguild
-version: 0.6
+version: 0.7
 api-version: 1.15
 main: main.java.HuntingGuild
 depend: [PlayertoSql]
@@ -23,6 +23,9 @@ permissions:
     default: op
   hg.setmsp:
     description: add/remove Spawnpoint for Mobs
+    default: op
+  hg.setpsp:
+    description: add/remove Spawnpoint for Player
     default: op
   hg.setwave:
     description: add/remove wave for Mobs
@@ -51,6 +54,9 @@ permissions:
   hg.leavehg:
     description: leave hg
     default: op
+  hg.plready:
+    description: playerready for hg
+    default: op
 commands:
   editgrouplive:
     description: change/get groupe live
@@ -69,10 +75,13 @@ commands:
     usage: /owninv <huntingroundname> <true/false>
   setmsp:
     description: add/remove Spawnpoint for Mobs
-    usage: /setmsp <huntingroundname> <name> <x> <y> <z> [remove]
+    usage: /setmsp <huntingroundname> <x> <y> <z> [remove]
+  setpsp:
+    description: add/remove Spawnpoint for Player
+    usage: /setpsp <huntingroundname> <x> <y> <z> [remove]
   setwave:
     description: add/remove wave for Mobs
-    usage: /setwave <huntingroundname> <number> <starttimer> [remove]
+    usage: /setwave <huntingroundname> <starttimer> <autostart> [remove]
   setwavemo:
     description: add/remove Mobs for wave
     usage: /setwavemo <huntingroundname> <waveid> <spawnpointname> <mobname> <amout> [remove]
@@ -97,3 +106,6 @@ commands:
   leavehg:
     description: leave hg
     usage: /leavehg <huntingroundname>
+  plready:
+    description: set player ready for hg
+    usage: /plready <huntingroundname>

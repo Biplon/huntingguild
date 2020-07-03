@@ -27,13 +27,11 @@ public class CommandWave implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        for (Wave item : HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getWaves())
+                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getWaves().size() >= Integer.parseInt(args[1]))
                         {
-                            if (item.waveid.equals(args[1]))
-                            {
-                                commandSender.sendMessage("Wave info: " + item.toString());
+                                commandSender.sendMessage("Wave info: " + HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getWaves().get(Integer.parseInt(args[1])).toString());
                                 return true;
-                            }
+
                         }
                         commandSender.sendMessage("Wave not found");
                         return true;
@@ -49,7 +47,7 @@ public class CommandWave implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addWave(args[1], args[2],Boolean.parseBoolean(args[3])))
+                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addWave(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getWaves().size(), args[1],Boolean.parseBoolean(args[2])))
                         {
                             commandSender.sendMessage("Wave created:"+ args[1] +"|"+ args[2]);
                             return true;
@@ -70,7 +68,7 @@ public class CommandWave implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeWave(args[1]);
+                        HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeWave(Integer.parseInt(args[1]));
                         commandSender.sendMessage("Wave removed: " + args[1]);
                         return true;
                     }

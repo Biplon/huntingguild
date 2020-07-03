@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Wave
 {
-    public final String waveid;
+    public final int waveid;
 
     public final double waveprecountdown;
 
@@ -12,7 +12,7 @@ public class Wave
 
     public final ArrayList<WaveMonster> wavemonsters = new ArrayList();
 
-    public Wave(String waveid, double waveprecountdown,boolean autostart)
+    public Wave(int waveid, double waveprecountdown,boolean autostart)
     {
         this.waveid = waveid;
         this.waveprecountdown = waveprecountdown;
@@ -35,6 +35,7 @@ public class Wave
         return "Wave{" +
                 "waveid=" + waveid +
                 ", waveprecountdown=" + waveprecountdown +
+                ", autostart=" +autostart +
                 '}';
     }
 }

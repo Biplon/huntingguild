@@ -26,7 +26,7 @@ public class CommandWaveMonster implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        String[] items = HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getWavemonsterfromWave(args[1]);
+                        String[] items = HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getWavemonsterfromWave(Integer.parseInt(args[1]));
                         for (int i = 0; i < items.length; i++)
                         {
                             commandSender.sendMessage("Wavemonster info: " + items[i]);
@@ -43,7 +43,7 @@ public class CommandWaveMonster implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addWaveMonstertoWave(args[1], args[3], args[4], args[2]))
+                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addWaveMonstertoWave(Integer.parseInt(args[1]), args[3], args[4], Integer.parseInt(args[2])))
                         {
                             commandSender.sendMessage("Wavemonster created: "+ args[1] +"|"+ args[3]+"|"+ args[4]+"|"+args[2]);
                             return true;
@@ -64,7 +64,7 @@ public class CommandWaveMonster implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeWaveMonsterfromWave(args[1], args[3]);
+                        HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeWaveMonsterfromWave(Integer.parseInt(args[1]), args[3]);
                         commandSender.sendMessage("Wavemonster removed: "+  args[1] +"|"+ args[3]);
                         return true;
                     }
