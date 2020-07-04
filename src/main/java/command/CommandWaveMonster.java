@@ -1,7 +1,6 @@
 package main.java.command;
 
 import main.java.huntingground.HuntingGroundManager;
-import main.java.huntingground.struct.Wave;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,14 +8,13 @@ import org.bukkit.entity.Player;
 
 public class CommandWaveMonster implements CommandExecutor
 {
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args)
     {
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.setwavemo"))
+            if (!player.hasPermission("hg.hgsetwavemo"))
             {
                 return false;
             }
@@ -27,9 +25,9 @@ public class CommandWaveMonster implements CommandExecutor
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
                         String[] items = HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getWavemonsterfromWave(Integer.parseInt(args[1]));
-                        for (int i = 0; i < items.length; i++)
+                        for (String item : items)
                         {
-                            commandSender.sendMessage("Wavemonster info: " + items[i]);
+                            commandSender.sendMessage("Wavemonster info: " + item);
                             return true;
                         }
                     }
@@ -45,34 +43,31 @@ public class CommandWaveMonster implements CommandExecutor
                     {
                         if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addWaveMonstertoWave(Integer.parseInt(args[1]), args[3], args[4], Integer.parseInt(args[2])))
                         {
-                            commandSender.sendMessage("Wavemonster created: "+ args[1] +"|"+ args[3]+"|"+ args[4]+"|"+args[2]);
-                            return true;
+                            commandSender.sendMessage("Wavemonster created: " + args[1] + "|" + args[3] + "|" + args[4] + "|" + args[2]);
                         }
                         else
                         {
                             commandSender.sendMessage("Can not create wavemonster");
-                            return true;
                         }
                     }
                     else
                     {
                         commandSender.sendMessage("No hunting ground found:" + args[0] + " (hunting ground not exist or is not in build mode)");
-                        return true;
                     }
+                    return true;
                 }
                 else if (args.length == 6)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
                         HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeWaveMonsterfromWave(Integer.parseInt(args[1]), args[3]);
-                        commandSender.sendMessage("Wavemonster removed: "+  args[1] +"|"+ args[3]);
-                        return true;
+                        commandSender.sendMessage("Wavemonster removed: " + args[1] + "|" + args[3]);
                     }
                     else
                     {
                         commandSender.sendMessage("No hunting ground found:" + args[0] + " (hunting ground not exist or is not in build mode)");
-                        return true;
                     }
+                    return true;
                 }
             }
         }

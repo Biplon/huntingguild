@@ -1,33 +1,42 @@
 package main.java.group;
 
-import main.java.PlayertoSql;
 import main.java.api.Playermanagement;
-import org.bukkit.Bukkit;
+import main.java.enums.HgGuis;
+import main.java.gui.GUIManager;
+import main.java.huntingground.HuntingGround;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Arrays;
 
 public class Group
 {
+    public HuntingGround myhg;
+
     public Player[] group;
 
     public boolean[] ready;
 
     public Location[] loc;
 
-    public Group(int groupsize)
+    public Group(int groupSize)
     {
-        group = new Player[groupsize];
-        ready = new boolean[groupsize];
-        loc = new Location[groupsize];
+        group = new Player[groupSize];
+        ready = new boolean[groupSize];
+        loc = new Location[groupSize];
         Arrays.fill(ready, false);
     }
 
-    public boolean addPlayer(Player p)
+    public Group(int groupSize,HuntingGround hg)
+    {
+        myhg = hg;
+        group = new Player[groupSize];
+        ready = new boolean[groupSize];
+        loc = new Location[groupSize];
+        Arrays.fill(ready, false);
+    }
+
+    public void addPlayer(Player p)
     {
         if (!isFull())
         {
@@ -36,11 +45,20 @@ public class Group
                 if (group[i] == null)
                 {
                     group[i] = p;
-                    return true;
+                    if (group.length > 1)
+                    {
+                        myhg.sendMessage(p.getDisplayName() +"Joint the hunting group");
+                        myhg.sendMessage( "Group: " + getFullSlots()+ "/" + getGroupSize());
+                        myhg.sendMessage( "You Need: " + getFreeGroupSlots()+ " Player to start");
+                    }
+                    if (isFull())
+                    {
+                        readyCheck();
+                    }
+                    return;
                 }
             }
         }
-        return false;
     }
 
     public void savePlayerloc()
@@ -51,20 +69,48 @@ public class Group
         }
     }
 
-    public boolean removePlayer(Player p)
+    public void removePlayer(Player p, boolean disconnect)
     {
         for (int i = 0; i < group.length; i++)
         {
             if (group[i].getUniqueId().equals(p.getUniqueId()))
             {
+                if (myhg.isinuse)
+                {
+                    myhg.teleportPlayerBack(p,loc[i]);
+                    if (!disconnect)
+                    {
+                        Playermanagement.getInstance().loadPlayerIgnoreDisableSync(p);
+                    }
+                    Playermanagement.getInstance().enablePlayerLoad(p);
+                    Playermanagement.getInstance().enablePlayerSave(p);
+                }
                 group[i] = null;
-                return true;
+                ready[i] = false;
+                loc[i] = null;
+                if (group.length > 1)
+                {
+                    myhg.sendMessage(p.getDisplayName() + "Leave the hunting group");
+                    if (!myhg.isinuse)
+                    {
+                        myhg.sendMessage( "Group: " + getFullSlots()+ "/" + getGroupSize());
+                        myhg.sendMessage( "You Need: " + getFreeGroupSlots()+ " Player to start");
+                    }
+                }
+                return;
             }
         }
-        return false;
     }
 
-    public boolean setPlayerready(Player p)
+    public void readyCheck()
+    {
+        for (Player p: group)
+        {
+            p.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hggroupreadycheck).getInventory());
+        }
+    }
+
+    public boolean setPlayerReady(Player p)
     {
         for (int i = 0; i < group.length; i++)
         {
@@ -93,16 +139,26 @@ public class Group
         }
     }
 
-    public boolean restoreInventory()
+    public boolean isPlayerInGroup(Player p)
+    {
+        for (Player pl:group)
+        {
+            if (pl.getUniqueId() == p.getUniqueId())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void restoreInventory()
     {
         for (Player p : group)
         {
-            Bukkit.getLogger().info(p.getDisplayName());
             Playermanagement.getInstance().loadPlayerIgnoreDisableSync(p);
             Playermanagement.getInstance().enablePlayerLoad(p);
             Playermanagement.getInstance().enablePlayerSave(p);
         }
-        return true;
     }
 
     public void clearGroup()
@@ -153,5 +209,4 @@ public class Group
         }
         return freeslots;
     }
-
 }

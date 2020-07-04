@@ -9,14 +9,13 @@ import org.bukkit.entity.Player;
 
 public class CommandHuntingGroundCreate implements CommandExecutor
 {
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args)
     {
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.createhg"))
+            if (!player.hasPermission("hg.hgcreate"))
             {
                 return false;
             }
@@ -31,21 +30,18 @@ public class CommandHuntingGroundCreate implements CommandExecutor
                             if (HuntingGroundManager.getInstance().createNewHuntingGround(args[0], args[1]))
                             {
                                 commandSender.sendMessage("Hunting ground is created. " + args[0] + "|" + args[1]);
-                                return true;
                             }
                             else
                             {
                                 commandSender.sendMessage("Hunting ground can not create");
-                                return true;
                             }
-
+                            return true;
                         }
                         else
                         {
                             commandSender.sendMessage("Hunting ground can not create.World not found: " + args[1]);
                             return true;
                         }
-
                     }
                     else
                     {

@@ -1,6 +1,5 @@
 package main.java.event;
 
-import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,12 +9,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
+
 public class InventoryClick implements Listener
 {
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e)
     {
-        if (e.getInventory() != GUIManager.getInstance().joingui.getInventory() || e.getInventory() != GUIManager.getInstance().joingui.getInventory() || e.getInventory() != GUIManager.getInstance().joingui.getInventory())
+        if (!e.getView().getTitle().equals("HG:"))
         {
             return;
         }
@@ -23,35 +24,54 @@ public class InventoryClick implements Listener
 
         final ItemStack clickedItem = e.getCurrentItem();
 
-        // verify current item is not null
         if (clickedItem == null || clickedItem.getType() == Material.AIR)
         {
             return;
         }
 
-
         final Player p = (Player) e.getWhoClicked();
+        final String hg = Objects.requireNonNull(e.getCurrentItem().getItemMeta()).getDisplayName();
 
-        // Using slots click is a best option for your inventory click's
-        if (e.getCurrentItem().getItemMeta().getDisplayName().equals("test2"))
+        if (HuntingGroundManager.getInstance().existHG(hg))
         {
-            if (!HuntingGroundManager.getInstance().getHuntingground("test2").hggroup.isFull())
+            if (!HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.isFull())
             {
-                HuntingGroundManager.getInstance().getHuntingground("test2").hggroup.addPlayer(p);
-                p.sendMessage("Group joined! For: test2");
+                HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.addPlayer(p);
+                p.closeInventory();
             }
             else
             {
-                p.sendMessage("Group full! For: test2");
+                p.sendMessage("Group full! For: " + hg);
+                e.setCancelled(true);
             }
         }
-        p.closeInventory();
+        else if (hg.equalsIgnoreCase("ready"))
+        {
+            HuntingGroundManager.getInstance().setPlayerReady(p);
+            p.closeInventory();
+        }
+        else if (hg.equalsIgnoreCase("not ready"))
+        {
+            p.sendMessage("If you ready type: /plready");
+            p.closeInventory();
+        }
+        else if (hg.equalsIgnoreCase("yes leave"))
+        {
+            HuntingGroundManager.getInstance().leavePlayer(p, false);
+            p.closeInventory();
+        }
+        else if (hg.equalsIgnoreCase("no"))
+        {
+            p.closeInventory();
+        }
+        e.setCancelled(true);
     }
 
     // Cancel dragging in our inventory
     @EventHandler
-    public void onInventoryClick(final InventoryDragEvent e) {
-        if (e.getInventory() == GUIManager.getInstance().joingui.getInventory() || e.getInventory() == GUIManager.getInstance().joingui.getInventory() || e.getInventory() == GUIManager.getInstance().joingui.getInventory())
+    public void onInventoryClick(final InventoryDragEvent e)
+    {
+        if (e.getView().getTitle().equals("HG:"))
         {
             e.setCancelled(true);
         }

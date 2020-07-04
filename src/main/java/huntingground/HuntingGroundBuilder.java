@@ -15,26 +15,6 @@ import java.util.Objects;
 
 public class HuntingGroundBuilder
 {
-    /*
-    fin:
-    huntinggroundname
-    world
-    equipcommands
-    huntinggroundlosecommands
-    huntinggroundwincommands
-    grouplifes
-    clearinventory
-    playerowninventory
-    spawnpoints
-    waves
-    wavemonster
-    group
-
-
-
-    save
-     */
-
     public final String huntinggroundname;
 
     public final String world;
@@ -55,10 +35,7 @@ public class HuntingGroundBuilder
 
     private final ArrayList<Spawnpoint> huntinggroundplayerspawns = new ArrayList();
 
-    public boolean clearinventory;
-
     public boolean playerowninventory;
-
 
     public HuntingGroundBuilder(String huntinggroundname, String world)
     {
@@ -71,11 +48,9 @@ public class HuntingGroundBuilder
         File f = new File(pfad);
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
 
-
         huntinggroundname = cfg.getString("general.huntinggroundname");
         world = cfg.getString("general.world");
-        playerowninventory =  cfg.getBoolean("inventory.keepplayerinventory");
-        clearinventory =  cfg.getBoolean("inventory.clearplayerinventoryonexit");
+        playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
         groupinhuntingground = new Group(cfg.getInt("group.maxplayer"));
         grouplifes = cfg.getInt("group.grouplives");
 
@@ -83,9 +58,9 @@ public class HuntingGroundBuilder
         int count = 0;
         while (isnext)
         {
-            if (cfg.getString("commands.playerjoin."+count) !=null)
+            if (cfg.getString("commands.playerjoin." + count) != null)
             {
-                equipcommands.add(cfg.getString("commands.playerjoin."+count));
+                equipcommands.add(cfg.getString("commands.playerjoin." + count));
                 count++;
             }
             else
@@ -97,9 +72,9 @@ public class HuntingGroundBuilder
         count = 0;
         while (isnext)
         {
-            if (cfg.getString("commands.playerleavewin."+count) !=null)
+            if (cfg.getString("commands.playerleavewin." + count) != null)
             {
-                huntinggroundwincommands.add(cfg.getString("commands.playerleavewin."+count));
+                huntinggroundwincommands.add(cfg.getString("commands.playerleavewin." + count));
                 count++;
             }
             else
@@ -112,9 +87,9 @@ public class HuntingGroundBuilder
         count = 0;
         while (isnext)
         {
-            if (cfg.getString("commands.playerleavelose."+count) !=null)
+            if (cfg.getString("commands.playerleavelose." + count) != null)
             {
-                huntinggroundlosecommands.add(cfg.getString("commands.playerleavelose."+count));
+                huntinggroundlosecommands.add(cfg.getString("commands.playerleavelose." + count));
                 count++;
             }
             else
@@ -129,10 +104,10 @@ public class HuntingGroundBuilder
 
         while (isnext)
         {
-            if (cfg.getString("spawnpoints."+count+".name") !=null)
+            if (cfg.getString("spawnpoints." + count + ".name") != null)
             {
-                coords = cfg.getString("spawnpoints."+count+".coords").split(",");
-                mobspawnpoints.add(new Spawnpoint(count,Integer.parseInt(coords[0]),Integer.parseInt(coords[1]),Integer.parseInt(coords[2])));
+                coords = Objects.requireNonNull(cfg.getString("spawnpoints." + count + ".coords")).split(",");
+                mobspawnpoints.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -145,10 +120,10 @@ public class HuntingGroundBuilder
         count = 0;
         while (isnext)
         {
-            if (cfg.getString("playerspawnpoints."+count+".name") !=null)
+            if (cfg.getString("playerspawnpoints." + count + ".name") != null)
             {
-                coords = cfg.getString("playerspawnpoints."+count+".coords").split(",");
-                huntinggroundplayerspawns.add(new Spawnpoint(count,Integer.parseInt(coords[0]),Integer.parseInt(coords[1]),Integer.parseInt(coords[2])));
+                coords = Objects.requireNonNull(cfg.getString("playerspawnpoints." + count + ".coords")).split(",");
+                huntinggroundplayerspawns.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -156,8 +131,6 @@ public class HuntingGroundBuilder
                 isnext = false;
             }
         }
-
-
 
         isnext = true;
         count = 0;
@@ -166,14 +139,14 @@ public class HuntingGroundBuilder
         int count2 = 0;
         while (isnext)
         {
-            if (cfg.getString("waves."+count+".cooldown") !=null)
+            if (cfg.getString("waves." + count + ".cooldown") != null)
             {
-                waves.add(new Wave(count,Double.parseDouble(Objects.requireNonNull(cfg.getString("waves." + count + ".cooldown"))),Boolean.parseBoolean(Objects.requireNonNull(cfg.getString("waves." + count + ".autostart")))));
+                waves.add(new Wave(count, Double.parseDouble(Objects.requireNonNull(cfg.getString("waves." + count + ".cooldown"))), Boolean.parseBoolean(Objects.requireNonNull(cfg.getString("waves." + count + ".autostart")))));
                 while (isnext2)
                 {
-                    if (cfg.getString("waves."+count+".monster."+count2+".name") !=null)
+                    if (cfg.getString("waves." + count + ".monster." + count2 + ".name") != null)
                     {
-                        waves.get(count).addWaveMonster(new WaveMonster(cfg.getString("waves."+count+".monster."+count2+".name"),cfg.getInt("waves."+count+".monster."+count2+".amount"), getMobSpawnpoint(cfg.getInt("waves."+count+".monster."+count2+".spawnpoint"))));
+                        waves.get(count).addWaveMonster(new WaveMonster(cfg.getString("waves." + count + ".monster." + count2 + ".name"), cfg.getInt("waves." + count + ".monster." + count2 + ".amount"), getMobSpawnpoint(cfg.getInt("waves." + count + ".monster." + count2 + ".spawnpoint"))));
                         count2++;
                     }
                     else
@@ -210,15 +183,6 @@ public class HuntingGroundBuilder
         this.grouplifes = grouplifes;
     }
 
-    public boolean isClearinventory()
-    {
-        return clearinventory;
-    }
-
-    public void setClearinventory(boolean clearinventory)
-    {
-        this.clearinventory = clearinventory;
-    }
 
     public boolean isPlayerowninventory()
     {
@@ -260,41 +224,29 @@ public class HuntingGroundBuilder
         return waves;
     }
 
-    public String getHuntinggroundname()
-    {
-        return huntinggroundname;
-    }
-
-    public String getWorld()
-    {
-        return world;
-    }
-
     public int getGroupinhuntingground()
     {
         return groupinhuntingground.group.length;
     }
 
-    public boolean addWaveMonstertoWave(int waveid,String mobname,String amout,int spawnpointindex)
+    public boolean addWaveMonstertoWave(int waveid, String mobname, String amout, int spawnpointindex)
     {
-        return waves.get(waveid).wavemonsters.add(new WaveMonster(mobname,Integer.parseInt(amout), mobspawnpoints.get(spawnpointindex)));
+        return waves.get(waveid).waveMonsters.add(new WaveMonster(mobname, Integer.parseInt(amout), mobspawnpoints.get(spawnpointindex)));
     }
 
-    public boolean removeWaveMonsterfromWave(int waveid,String mobname)
+    public void removeWaveMonsterfromWave(int waveid, String mobname)
     {
-                return waves.get(waveid).wavemonsters.removeIf(n -> (n.mobname == mobname));
+        waves.get(waveid).waveMonsters.removeIf(n -> (n.mobname.equals(mobname)));
     }
 
     public String[] getWavemonsterfromWave(int waveid)
     {
-
-                String[] item = new String[waves.get(waveid).wavemonsters.size()];
-                for (int i = 0; i < item.length; i++)
-                {
-                    item[i] =  waves.get(waveid).wavemonsters.get(i).toString();
-                }
-                return item;
-
+        String[] item = new String[waves.get(waveid).waveMonsters.size()];
+        for (int i = 0; i < item.length; i++)
+        {
+            item[i] = waves.get(waveid).waveMonsters.get(i).toString();
+        }
+        return item;
     }
 
     public boolean setGroupinhuntingground(String size)
@@ -310,33 +262,24 @@ public class HuntingGroundBuilder
         }
     }
 
-    public boolean addWave(int id,String cooldown,boolean autostart)
+    public boolean addWave(int id, String cooldown, boolean autostart)
     {
-        if ( waves.add(new Wave(id,Double.parseDouble(cooldown),autostart)))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return waves.add(new Wave(id, Double.parseDouble(cooldown), autostart));
     }
 
-    public boolean addSpawnpoint(Spawnpoint sp)
+    public void addSpawnpoint(Spawnpoint sp)
     {
         mobspawnpoints.add(sp);
-        return true;
     }
 
-    public boolean addPlayerSpawnpoint(Spawnpoint sp)
+    public void addPlayerSpawnpoint(Spawnpoint sp)
     {
         huntinggroundplayerspawns.add(sp);
-        return true;
     }
 
-    public boolean removeWave(int index)
+    public void removeWave(int index)
     {
-        return waves.remove(index) != null;
+        waves.remove(index);
     }
 
     public boolean removeMobSpawnpoint(int index)
@@ -349,82 +292,43 @@ public class HuntingGroundBuilder
         return huntinggroundplayerspawns.remove(index) != null;
     }
 
-    public boolean addHuntinggroundwincommands(String command)
+    public void addHuntinggroundwincommands(String command)
     {
         if (!huntinggroundwincommands.contains(command))
         {
             huntinggroundwincommands.add(command);
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
-    public boolean addHuntinggroundlosecommands(String command)
+    public void addHuntinggroundlosecommands(String command)
     {
         if (!huntinggroundlosecommands.contains(command))
         {
             huntinggroundlosecommands.add(command);
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
-    public boolean addEquipcommands(String command)
+    public void addEquipcommands(String command)
     {
         if (!equipcommands.contains(command))
         {
             equipcommands.add(command);
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
-    public boolean removeHuntinggroundwincommands(String command)
+    public void removeHuntinggroundwincommands(String command)
     {
-        if (huntinggroundwincommands.contains(command))
-        {
-            huntinggroundwincommands.remove(command);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        huntinggroundwincommands.remove(command);
     }
 
-    public boolean removeHuntinggroundlosecommands(String command)
+    public void removeHuntinggroundlosecommands(String command)
     {
-        if (huntinggroundlosecommands.contains(command))
-        {
-            huntinggroundlosecommands.remove(command);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        huntinggroundlosecommands.remove(command);
     }
 
-    public boolean removeEquipcommands(String command)
+    public void removeEquipcommands(String command)
     {
-        if (equipcommands.contains(command))
-        {
-            equipcommands.remove(command);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        equipcommands.remove(command);
     }
 
     public boolean saveHuntingGround()
@@ -436,41 +340,40 @@ public class HuntingGroundBuilder
         }
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
 
-        cfg.set("general.huntinggroundname",huntinggroundname);
-        cfg.set("general.world",world);
-        cfg.set("inventory.keepplayerinventory",playerowninventory);
-        cfg.set("inventory.clearplayerinventoryonexit",clearinventory);
-        cfg.set("group.maxplayer",groupinhuntingground.group.length);
-        cfg.set("group.grouplives",grouplifes);
+        cfg.set("general.huntinggroundname", huntinggroundname);
+        cfg.set("general.world", world);
+        cfg.set("inventory.keepplayerinventory", playerowninventory);
+        cfg.set("group.maxplayer", groupinhuntingground.group.length);
+        cfg.set("group.grouplives", grouplifes);
         for (int i = 0; i < equipcommands.size(); i++)
         {
-            cfg.set("commands.playerjoin."+i,equipcommands.get(i));
+            cfg.set("commands.playerjoin." + i, equipcommands.get(i));
         }
         for (int i = 0; i < huntinggroundwincommands.size(); i++)
         {
-            cfg.set("commands.playerleavewin."+i,huntinggroundwincommands.get(i));
+            cfg.set("commands.playerleavewin." + i, huntinggroundwincommands.get(i));
         }
         for (int i = 0; i < huntinggroundlosecommands.size(); i++)
         {
-            cfg.set("commands.playerleavelose."+i,huntinggroundlosecommands.get(i));
+            cfg.set("commands.playerleavelose." + i, huntinggroundlosecommands.get(i));
         }
         for (int i = 0; i < mobspawnpoints.size(); i++)
         {
-            cfg.set("spawnpoints."+i+".coords" , mobspawnpoints.get(i).posx +","+ mobspawnpoints.get(i).posy +","+ mobspawnpoints.get(i).posz);
+            cfg.set("spawnpoints." + i + ".coords", mobspawnpoints.get(i).posx + "," + mobspawnpoints.get(i).posy + "," + mobspawnpoints.get(i).posz);
         }
         for (int i = 0; i < huntinggroundplayerspawns.size(); i++)
         {
-            cfg.set("playerspawnpoints."+i+".coords" , mobspawnpoints.get(i).posx +","+ mobspawnpoints.get(i).posy +","+ mobspawnpoints.get(i).posz);
+            cfg.set("playerspawnpoints." + i + ".coords", mobspawnpoints.get(i).posx + "," + mobspawnpoints.get(i).posy + "," + mobspawnpoints.get(i).posz);
         }
         for (int i = 0; i < waves.size(); i++)
         {
-            cfg.set("waves."+i+".cooldown" ,waves.get(i).waveprecountdown);
-            cfg.set("waves."+i+".autostart" ,waves.get(i).autostart);
-            for (int j = 0; j < waves.get(i).wavemonsters.size(); j++)
+            cfg.set("waves." + i + ".cooldown", waves.get(i).waveprecountdown);
+            cfg.set("waves." + i + ".autostart", waves.get(i).autostart);
+            for (int j = 0; j < waves.get(i).waveMonsters.size(); j++)
             {
-                cfg.set("waves."+i+".monster."+j+".name" ,waves.get(i).wavemonsters.get(j).mobname);
-                cfg.set("waves."+i+".monster."+j+".amount" ,waves.get(i).wavemonsters.get(j).amount);
-                cfg.set("waves."+i+".monster."+j+".spawnpoint" ,waves.get(i).wavemonsters.get(j).sp.id);
+                cfg.set("waves." + i + ".monster." + j + ".name", waves.get(i).waveMonsters.get(j).mobname);
+                cfg.set("waves." + i + ".monster." + j + ".amount", waves.get(i).waveMonsters.get(j).amount);
+                cfg.set("waves." + i + ".monster." + j + ".spawnpoint", waves.get(i).waveMonsters.get(j).sp.id);
             }
         }
         try

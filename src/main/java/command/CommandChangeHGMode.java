@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 public class CommandChangeHGMode implements CommandExecutor
 {
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args)
     {
@@ -23,19 +22,15 @@ public class CommandChangeHGMode implements CommandExecutor
             {
                 if (args.length == 1)
                 {
-
-                        if (HuntingGroundManager.getInstance().changeHuntingGroundMode(args[0]))
-                        {
-                            commandSender.sendMessage("Hunting ground mode changed: " + args[0]);
-                            return true;
-
-                        }
-                        else
-                        {
-                            commandSender.sendMessage("Hunting ground mode can not changed: " + args[0]  +" (is a Group in it ?)");
-                            return true;
-                        }
-
+                    if (HuntingGroundManager.getInstance().changeHuntingGroundMode(args[0]))
+                    {
+                        commandSender.sendMessage("Hunting ground mode changed: " + args[0]);
+                    }
+                    else
+                    {
+                        commandSender.sendMessage("Hunting ground mode can not changed: " + args[0] + " (is a Group in it ?)");
+                    }
+                    return true;
                 }
             }
         }

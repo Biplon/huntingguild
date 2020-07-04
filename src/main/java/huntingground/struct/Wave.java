@@ -10,9 +10,9 @@ public class Wave
 
     public final boolean autostart;
 
-    public final ArrayList<WaveMonster> wavemonsters = new ArrayList();
+    public final ArrayList<WaveMonster> waveMonsters = new ArrayList();
 
-    public Wave(int waveid, double waveprecountdown,boolean autostart)
+    public Wave(int waveid, double waveprecountdown, boolean autostart)
     {
         this.waveid = waveid;
         this.waveprecountdown = waveprecountdown;
@@ -21,12 +21,7 @@ public class Wave
 
     public void addWaveMonster(WaveMonster wavemonster)
     {
-        wavemonsters.add(wavemonster);
-    }
-
-    public void removeWaveMonster(WaveMonster wavemonster)
-    {
-        wavemonsters.remove(wavemonster);
+        waveMonsters.add(wavemonster);
     }
 
     @Override
@@ -35,7 +30,7 @@ public class Wave
         return "Wave{" +
                 "waveid=" + waveid +
                 ", waveprecountdown=" + waveprecountdown +
-                ", autostart=" +autostart +
+                ", autostart=" + autostart +
                 '}';
     }
 }

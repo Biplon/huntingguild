@@ -9,14 +9,13 @@ import org.bukkit.entity.Player;
 
 public class CommandSetMobSpawnpoint implements CommandExecutor
 {
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args)
     {
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.setmsp"))
+            if (!player.hasPermission("hg.hgsetmsp"))
             {
                 return false;
             }
@@ -28,20 +27,16 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
                     {
                         if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().size() >= Integer.parseInt(args[1]))
                         {
-                           ;
-                            commandSender.sendMessage("Spawnpoint info: " +  HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().get(Integer.parseInt(args[1])).toString());
+                            commandSender.sendMessage("Spawnpoint info: " + HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().get(Integer.parseInt(args[1])).toString());
                             return true;
-
                         }
                         commandSender.sendMessage("Spawnpoint not found");
-                        return true;
-
                     }
                     else
                     {
                         commandSender.sendMessage("No hunting ground found:" + args[0] + " (hunting ground not exist or is not in build mode)");
-                        return true;
                     }
+                    return true;
                 }
                 else if (args.length == 5)
                 {
@@ -50,13 +45,12 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
                         Spawnpoint sp = new Spawnpoint(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().size(), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
                         HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addSpawnpoint(sp);
                         commandSender.sendMessage("Spawnpoint create: " + sp.toString());
-                        return true;
                     }
                     else
                     {
                         commandSender.sendMessage("No hunting ground found:" + args[0] + " (hunting ground not exist or is not in build mode)");
-                        return true;
                     }
+                    return true;
                 }
                 else if (args.length == 6)
                 {
@@ -65,20 +59,17 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
                         if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).removeMobSpawnpoint(Integer.parseInt(args[1])))
                         {
                             commandSender.sendMessage("Spawnpoint deleted: " + args[1]);
-                            return true;
                         }
                         else
                         {
                             commandSender.sendMessage("Spawnpoint not found.");
-                            return true;
                         }
-
                     }
                     else
                     {
                         commandSender.sendMessage("No hunting ground found:" + args[0] + " (hunting ground not exist or is not in build mode)");
-                        return true;
                     }
+                    return true;
                 }
             }
         }

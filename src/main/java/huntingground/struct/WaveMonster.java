@@ -8,6 +8,13 @@ public class WaveMonster
 
     public final Spawnpoint sp;
 
+    public WaveMonster(String mobname, int amount, Spawnpoint sp)
+    {
+        this.mobname = mobname;
+        this.amount = amount;
+        this.sp = sp;
+    }
+
     @Override
     public String toString()
     {
@@ -16,12 +23,5 @@ public class WaveMonster
                 ", amount=" + amount +
                 ", sp=" + sp +
                 '}';
-    }
-
-    public WaveMonster(String mobname, int amount, Spawnpoint sp)
-    {
-        this.mobname = mobname;
-        this.amount = amount;
-        this.sp = sp;
     }
 }

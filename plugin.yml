@@ -1,39 +1,36 @@
 name: Huntingguild
 author: Vestri
 description: huntingguild
-version: 0.7
+version: 0.8
 api-version: 1.15
 main: main.java.HuntingGuild
 depend: [PlayertoSql]
 permissions:
-  hg.editgrouplive:
+  hg.hgeditgrouplive:
     description: change groupe live
     default: op
-  hg.editcommands:
+  hg.hgeditcommands:
     description: change hunting ground commands
     default: op
-  hg.createhg:
+  hg.hgcreate:
     description: create a new hunting ground
     default: op
-  hg.clearinv:
-    description: set clear inventory for huntingground
-    default: op
-  hg.owninv:
+  hg.hgowninv:
     description: set player own inventory for huntingground
     default: op
-  hg.setmsp:
+  hg.hgsetmsp:
     description: add/remove Spawnpoint for Mobs
     default: op
-  hg.setpsp:
+  hg.hgsetpsp:
     description: add/remove Spawnpoint for Player
     default: op
-  hg.setwave:
+  hg.hgsetwave:
     description: add/remove wave for Mobs
     default: op
-  hg.setwavemo:
+  hg.hgsetwavemo:
     description: add/remove Mobs for wave
     default: op
-  hg.creategfhg:
+  hg.hgcreateg:
     description: add group for hunting ground
     default: op
   hg.hgsave:
@@ -42,70 +39,67 @@ permissions:
   hg.hgmode:
     description: change hunting ground mode
     default: op
-  hg.startwave:
+  hg.hgstartwave:
     description: start wave
     default: op
-  hg.starthg:
+  hg.hgstart:
     description: start hg
     default: op
-  hg.joinhg:
+  hg.hgjoin:
     description: join hg
     default: op
-  hg.leavehg:
+  hg.hgleave:
     description: leave hg
     default: op
-  hg.plready:
+  hg.hgplready:
     description: playerready for hg
     default: op
 commands:
-  editgrouplive:
+  hgeditgrouplive:
     description: change/get groupe live
-    usage: /editgrouplive <huntingroundname> [lives]
-  editcommands:
+    usage: /hgeditgrouplive <huntingroundname> [lives]
+  hgeditcommands:
     description: add/remove hunting ground commands. Playervariable in Command %player%. Commands without /
-    usage: /editcommands <huntingroundname> <win/lose/equip> [command] [remove]
-  createhg:
+    usage: /hgeditcommands <huntingroundname> <win/lose/equip> [command] [remove]
+  hgcreate:
     description: create a new hunting ground
-    usage: /createhg <huntingroundname> <world>
-  clearinv:
-    description: set clear inventory for huntingground
-    usage: /clearinv <huntingroundname> <true/false>
-  owninv:
+    usage: /hgcreate <huntingroundname> <world>
+  hgowninv:
     description: set player own inventory for huntingground
-    usage: /owninv <huntingroundname> <true/false>
-  setmsp:
+    usage: /hgowninv <huntingroundname> <true/false>
+  hgsetmsp:
     description: add/remove Spawnpoint for Mobs
-    usage: /setmsp <huntingroundname> <x> <y> <z> [remove]
-  setpsp:
+    usage: /hgsetmsp <huntingroundname> <x> <y> <z> [remove]
+  hgsetpsp:
     description: add/remove Spawnpoint for Player
-    usage: /setpsp <huntingroundname> <x> <y> <z> [remove]
-  setwave:
+    usage: /hgsetpsp <huntingroundname> <x> <y> <z> [remove]
+  hgsetwave:
     description: add/remove wave for Mobs
-    usage: /setwave <huntingroundname> <starttimer> <autostart> [remove]
-  setwavemo:
+    usage: /hgsetwave <huntingroundname> <starttimer> <autostart> [remove]
+  hgsetwavemo:
     description: add/remove Mobs for wave
-    usage: /setwavemo <huntingroundname> <waveid> <spawnpointname> <mobname> <amout> [remove]
-  creategfhg:
+    usage: /hgsetwavemo <huntingroundname> <waveid> <spawnpointname> <mobname> <amout> [remove]
+  hgcreateg:
     description: add group for hunting ground
-    usage: /creategfhg <huntingroundname> <size>
+    usage: /hgcreateg <huntingroundname> <size>
   hgsave:
     description: save hunting ground
     usage: /hgsave <huntingroundname>
   hgmode:
     description: change the hunting ground mode (live/build)
     usage: /hgmode <huntingroundname>
-  startwave:
+  hgstartwave:
     description: start wave
-    usage: /startwave <huntingroundname>
-  starthg:
+    usage: /hgstartwave <huntingroundname>
+  hgstart:
     description: start hg
-    usage: /starthg <huntingroundname>
-  joinhg:
+    usage: /hgstart <huntingroundname>
+  hgjoin:
     description: join hg
-    usage: /joinhg <huntingroundname>
-  leavehg:
+    usage: /hgjoin <huntingroundname>
+  hgleave:
     description: leave hg
-    usage: /leavehg <huntingroundname>
-  plready:
+    usage: /hgleave <huntingroundname>
+  hgplready:
     description: set player ready for hg
-    usage: /plready <huntingroundname>
+    usage: /hgplready <huntingroundname>

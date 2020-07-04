@@ -1,7 +1,6 @@
 package main.java.huntingground;
 
 import main.java.HuntingGuild;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HuntingGroundManager
 {
@@ -26,7 +26,6 @@ public class HuntingGroundManager
     {
         return instance;
     }
-
 
     public void loadHuntingGrounds()
     {
@@ -59,13 +58,10 @@ public class HuntingGroundManager
         }
     }
 
-
-
     private static void search(final String pattern, final File folder, List<String> result)
     {
-        for (final File f : folder.listFiles())
+        for (final File f : Objects.requireNonNull(folder.listFiles()))
         {
-
             if (f.isDirectory())
             {
                 search(pattern, f, result);
@@ -78,7 +74,6 @@ public class HuntingGroundManager
                     result.add(f.getAbsolutePath());
                 }
             }
-
         }
     }
 
@@ -86,12 +81,50 @@ public class HuntingGroundManager
     {
         for (HuntingGround item : huntingGrounds)
         {
+            assert item.huntinggroundname != null;
             if (item.huntinggroundname.equals(huntinggroundname))
             {
                 return item;
             }
         }
         return null;
+    }
+
+    public boolean existHG(String huntinggroundname)
+    {
+        for (HuntingGround item : huntingGrounds)
+        {
+            assert item.huntinggroundname != null;
+            if (item.huntinggroundname.equals(huntinggroundname))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setPlayerReady(Player p)
+    {
+        for (HuntingGround hg : huntingGrounds)
+        {
+            if (hg.hggroup.isPlayerInGroup(p))
+            {
+                hg.hggroup.setPlayerReady(p);
+                return;
+            }
+        }
+    }
+
+    public void leavePlayer(Player p, boolean disconnect)
+    {
+        for (HuntingGround hg : huntingGrounds)
+        {
+            if (hg.hggroup.isPlayerInGroup(p))
+            {
+                hg.hggroup.removePlayer(p, disconnect);
+                return;
+            }
+        }
     }
 
     public HuntingGround getHuntingground(int index)
@@ -104,13 +137,13 @@ public class HuntingGroundManager
         {
             return null;
         }
-
     }
 
     public HuntingGroundBuilder getHuntingGroundBuilder(String huntinggroundname)
     {
         for (HuntingGroundBuilder item : huntingGroundBuilders)
         {
+            assert item.huntinggroundname != null;
             if (item.huntinggroundname.equals(huntinggroundname))
             {
                 return item;
@@ -118,7 +151,6 @@ public class HuntingGroundManager
         }
         return null;
     }
-
 
     public boolean changeHuntingGroundMode(String hgname)
     {
@@ -178,10 +210,10 @@ public class HuntingGroundManager
     {
         if (player)
         {
-            Player p = (Player)e;
-            for (HuntingGround hg: huntingGrounds)
+            Player p = (Player) e;
+            for (HuntingGround hg : huntingGrounds)
             {
-                for (Player pp :hg.hggroup.group)
+                for (Player pp : hg.hggroup.group)
                 {
                     if (p.getUniqueId() == pp.getUniqueId())
                     {
@@ -195,7 +227,7 @@ public class HuntingGroundManager
         {
             if (e instanceof Creature)
             {
-                for (HuntingGround hg: huntingGrounds)
+                for (HuntingGround hg : huntingGrounds)
                 {
                     if (hg.isinuse && hg.iswaveactive)
                     {
@@ -203,7 +235,6 @@ public class HuntingGroundManager
                     }
                 }
             }
-
         }
     }
 }

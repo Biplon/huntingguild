@@ -2,10 +2,9 @@ package main.java;
 
 import main.java.command.*;
 import main.java.config.ConfigManager;
-import main.java.config.HuntingGroundConfigManager;
 import main.java.event.InventoryClick;
 import main.java.event.OnEntityDeath;
-import main.java.group.GroupManager;
+import main.java.event.OnPlayerQuit;
 import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.Bukkit;
@@ -17,20 +16,15 @@ public class HuntingGuild extends JavaPlugin
 {
     static HuntingGuild instance;
 
-
     public void onEnable()
     {
         instance = this;
-        new GroupManager();
         new ConfigManager();
-        new HuntingGroundConfigManager();
         new HuntingGroundManager();
         new GUIManager();
         try
         {
-
             ConfigManager.loadConfig();
-
         }
         catch (Exception e)
         {
@@ -48,23 +42,22 @@ public class HuntingGuild extends JavaPlugin
 
     private void regCommands()
     {
-        this.getCommand("editcommands").setExecutor(new CommandHuntingGroundCommands());
-        this.getCommand("editgrouplive").setExecutor(new CommandHuntingGroundGroupLive());
-        this.getCommand("createhg").setExecutor(new CommandHuntingGroundCreate());
-        this.getCommand("clearinv").setExecutor(new CommandClearInventory());
-        this.getCommand("owninv").setExecutor(new CommandPlayerOwnInventory());
-        this.getCommand("setmsp").setExecutor(new CommandSetMobSpawnpoint());
-        this.getCommand("setpsp").setExecutor(new CommandSetPlayerSpawnpoint());
-        this.getCommand("setwave").setExecutor(new CommandWave());
-        this.getCommand("setwavemo").setExecutor(new CommandWaveMonster());
-        this.getCommand("creategfhg").setExecutor(new CommandCreateGroupForHG());
+        this.getCommand("hgeditcommands").setExecutor(new CommandHuntingGroundCommands());
+        this.getCommand("hgeditgrouplive").setExecutor(new CommandHuntingGroundGroupLive());
+        this.getCommand("hgcreate").setExecutor(new CommandHuntingGroundCreate());
+        this.getCommand("hgowninv").setExecutor(new CommandPlayerOwnInventory());
+        this.getCommand("hgsetmsp").setExecutor(new CommandSetMobSpawnpoint());
+        this.getCommand("hgsetpsp").setExecutor(new CommandSetPlayerSpawnpoint());
+        this.getCommand("hgsetwave").setExecutor(new CommandWave());
+        this.getCommand("hgsetwavemo").setExecutor(new CommandWaveMonster());
+        this.getCommand("hgcreateg").setExecutor(new CommandCreateGroupForHG());
         this.getCommand("hgsave").setExecutor(new CommandSaveHG());
         this.getCommand("hgmode").setExecutor(new CommandChangeHGMode());
-        this.getCommand("startwave").setExecutor(new CommandStartWave());
-        this.getCommand("starthg").setExecutor(new CommandStartHG());
-        this.getCommand("joinhg").setExecutor(new CommandJoinHG());
-        this.getCommand("leavehg").setExecutor(new CommandLeaveHG());
-        this.getCommand("plready").setExecutor(new CommandSetPlayerReady());
+        this.getCommand("hgstartwave").setExecutor(new CommandStartWave());
+        this.getCommand("hgstarthg").setExecutor(new CommandStartHG());
+        this.getCommand("hgjoin").setExecutor(new CommandJoinHG());
+        this.getCommand("hgleave").setExecutor(new CommandLeaveHG());
+        this.getCommand("hgplready").setExecutor(new CommandSetPlayerReady());
     }
 
     private void regEvents()
@@ -72,6 +65,7 @@ public class HuntingGuild extends JavaPlugin
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new OnEntityDeath(), this);
         pm.registerEvents(new InventoryClick(), this);
+        pm.registerEvents(new OnPlayerQuit(), this);
     }
 
     @Override
@@ -85,5 +79,4 @@ public class HuntingGuild extends JavaPlugin
     {
         return instance;
     }
-
 }

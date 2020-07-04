@@ -43,8 +43,6 @@ public class HuntingGround
 
     public ArrayList<Creature> enemylist = new ArrayList();
 
-    public boolean clearinventory;
-
     public boolean playerowninventory;
 
     public boolean isinuse = false;
@@ -58,12 +56,10 @@ public class HuntingGround
         File f = new File(configpfad);
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
 
-
         huntinggroundname = cfg.getString("general.huntinggroundname");
         world = cfg.getString("general.world");
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
-        clearinventory = cfg.getBoolean("inventory.clearplayerinventoryonexit");
-        hggroup = new Group(cfg.getInt("group.maxplayer"));
+        hggroup = new Group(cfg.getInt("group.maxplayer"), this);
         grouplives = cfg.getInt("group.grouplives");
 
         boolean isnext = true;
@@ -132,11 +128,11 @@ public class HuntingGround
         count = 0;
         while (isnext)
         {
-            if (cfg.getString("playerspawnpoints."+count+".coords") !=null)
+            if (cfg.getString("playerspawnpoints." + count + ".coords") != null)
             {
-                Bukkit.getLogger().info(cfg.getString("playerspawnpoints."+count+".coords"));
-                coords = cfg.getString("playerspawnpoints."+count+".coords").split(",");
-                huntinggroundplayerspawns.add(new Spawnpoint(count,Integer.parseInt(coords[0]),Integer.parseInt(coords[1]),Integer.parseInt(coords[2])));
+                Bukkit.getLogger().info(cfg.getString("playerspawnpoints." + count + ".coords"));
+                coords = cfg.getString("playerspawnpoints." + count + ".coords").split(",");
+                huntinggroundplayerspawns.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -180,28 +176,39 @@ public class HuntingGround
 
     private Spawnpoint getSpawnpoint(int index)
     {
-       return spawnpoints.size() >= index ? spawnpoints.get(index) : null;
+        return spawnpoints.size() >= index ? spawnpoints.get(index) : null;
     }
 
     public void teleportPlayerToHG()
     {
-        Location loc = new Location(Bukkit.getWorld(world),huntinggroundplayerspawns.get(0).posx,huntinggroundplayerspawns.get(0).posy,huntinggroundplayerspawns.get(0).posz);
+        Location loc = new Location(Bukkit.getWorld(world), huntinggroundplayerspawns.get(0).posx, huntinggroundplayerspawns.get(0).posy, huntinggroundplayerspawns.get(0).posz);
 
-        for (Player p: hggroup.group)
+        for (Player p : hggroup.group)
         {
-            p.teleport(loc);
+            if (p != null)
+            {
+                p.teleport(loc);
+            }
         }
     }
 
-    public void teleportPlayerBack()
+    public void teleportPlayersBack()
     {
         for (int i = 0; i < hggroup.group.length; i++)
         {
-            hggroup.group[i].teleport(hggroup.loc[i]);
+            if (hggroup.group[i] != null)
+            {
+                hggroup.group[i].teleport(hggroup.loc[i]);
+            }
         }
     }
 
-    public boolean starthuntingground()
+    public void teleportPlayerBack(Player p, Location loc)
+    {
+        p.teleport(loc);
+    }
+
+    public boolean startHuntingGround()
     {
         if (hggroup.isFull())
         {
@@ -226,21 +233,14 @@ public class HuntingGround
                 }
             }
             grouplivescurrent = grouplives;
-            /*
-            if (waves.get(0).autostart)
-            {
-                startWave();
-            }
-
-             */
             return true;
         }
         return false;
     }
 
-    public boolean endhuntinground(boolean win)
+    public void endHuntingGround(boolean win)
     {
-        teleportPlayerBack();
+        teleportPlayersBack();
         if (!playerowninventory)
         {
             hggroup.restoreInventory();
@@ -258,10 +258,9 @@ public class HuntingGround
             {
                 for (String s : huntinggroundlosecommands)
                 {
-                   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));
                 }
             }
-
         }
         if (win)
         {
@@ -275,8 +274,6 @@ public class HuntingGround
         wavecount = 0;
         iswaveactive = false;
         hggroup.clearGroup();
-        sendMessage("you leaved the hunting ground group");
-        return true;
     }
 
     public void reduceGroupLive()
@@ -284,26 +281,26 @@ public class HuntingGround
         grouplivescurrent--;
         if (grouplivescurrent <= 0)
         {
-            endhuntinground(false);
+            endHuntingGround(false);
         }
     }
 
     Map<String, String> data = new HashMap<String, String>();
 
-    public boolean startWave()
+    public void startWave()
     {
         if (!iswaveactive)
         {
-            for (WaveMonster wm : waves.get(wavecount).wavemonsters)
+            for (WaveMonster wm : waves.get(wavecount).waveMonsters)
             {
                 // "mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}"
 
                 data.put("type", wm.mobname);
-              //  data.put("number", "" + wm.amount);
+                //  data.put("number", "" + wm.amount);
                 data.put("x", "" + wm.sp.posx);
                 data.put("y", "" + wm.sp.posy);
                 data.put("z", "" + wm.sp.posz);
-               // data.put("world", world);
+                // data.put("world", world);
                 String formattedString = StrSubstitutor.replace(ConfigManager.spawncommand, data);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedString);
                 data.clear();
@@ -311,11 +308,6 @@ public class HuntingGround
             wavecount++;
             GetEnemys();
             iswaveactive = true;
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
@@ -324,7 +316,7 @@ public class HuntingGround
         for (Spawnpoint sp : spawnpoints)
         {
             Location EntityArea = new Location(Bukkit.getWorld(world), sp.posx, sp.posy, sp.posz);
-            List<Entity> nearbyEntities = (List<Entity>) EntityArea.getWorld().getNearbyEntities(EntityArea, 15, 15, 15);
+            List<Entity> nearbyEntities = (List<Entity>) Objects.requireNonNull(EntityArea.getWorld()).getNearbyEntities(EntityArea, 15, 15, 15);
             for (Entity e : nearbyEntities)
             {
                 if (e instanceof Creature)
@@ -339,7 +331,7 @@ public class HuntingGround
     {
         ArrayList<Creature> tmp = new ArrayList<>();
         checkIsWaveClear();
-        for (Creature e:enemylist)
+        for (Creature e : enemylist)
         {
             if (!e.isDead())
             {
@@ -348,7 +340,6 @@ public class HuntingGround
         }
         enemylist = tmp;
     }
-
 
     public void checkIsWaveClear()
     {
@@ -359,7 +350,7 @@ public class HuntingGround
             if (wavecount >= waves.size())
             {
                 sendMessage("hg clear");
-                endhuntinground(true);
+                endHuntingGround(true);
             }
             else if (waves.get(wavecount).autostart)
             {
@@ -369,7 +360,7 @@ public class HuntingGround
         }
     }
 
-    private void sendMessage(String msg)
+    public void sendMessage(String msg)
     {
         for (Player p : hggroup.group)
         {
@@ -379,5 +370,4 @@ public class HuntingGround
             }
         }
     }
-
 }

@@ -8,14 +8,13 @@ import org.bukkit.entity.Player;
 
 public class CommandStartHG implements CommandExecutor
 {
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args)
     {
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.starthg"))
+            if (!player.hasPermission("hg.hgstart"))
             {
                 return false;
             }
@@ -25,7 +24,7 @@ public class CommandStartHG implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
                     {
-                        if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).starthuntingground())
+                        if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).startHuntingGround())
                         {
                             commandSender.sendMessage("Hunting ground can not start. Group not full!");
                         }

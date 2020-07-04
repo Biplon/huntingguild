@@ -8,14 +8,13 @@ import org.bukkit.entity.Player;
 
 public class CommandStartWave implements CommandExecutor
 {
-
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args)
     {
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.startwave"))
+            if (!player.hasPermission("hg.hgstartwave"))
             {
                 return false;
             }
@@ -23,13 +22,11 @@ public class CommandStartWave implements CommandExecutor
             {
                 if (args.length == 1)
                 {
-
                     if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
                     {
                         HuntingGroundManager.getInstance().getHuntingground(args[0]).startWave();
                     }
                     return true;
-
                 }
             }
         }

@@ -1,11 +1,6 @@
 package main.java.gui;
 
-import main.java.HuntingGuild;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Creature;
-
-import java.io.File;
+import main.java.enums.HgGuis;
 
 public class GUIManager
 {
@@ -20,7 +15,6 @@ public class GUIManager
     public GUIManager()
     {
         instance = this;
-        createGUIs();
     }
 
     public static GUIManager getInstance()
@@ -28,20 +22,8 @@ public class GUIManager
         return instance;
     }
 
-    private void createGUIs()
+    public HGGUI getGUIInstance(HgGuis gui)
     {
-
-        joingui = new HGGUI("Join hunting ground",45);
-        joingui.initializeItems();
-
-        leavegui = new HGGUI("Leave hunting ground",27);
-    //    leavegui.initializeItems();
-
-        editorgui = new HGGUI("Hunting ground editor",54);
-     //   editorgui.initializeItems();
-
-
+        return new HGGUI(gui);
     }
-
-
 }
