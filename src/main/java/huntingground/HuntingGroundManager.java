@@ -1,6 +1,7 @@
 package main.java.huntingground;
 
 import main.java.HuntingGuild;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -109,7 +110,14 @@ public class HuntingGroundManager
         {
             if (hg.hggroup.isPlayerInGroup(p))
             {
-                hg.hggroup.setPlayerReady(p);
+                if (hg.hggroup.setPlayerReady(p))
+                {
+                    if (hg.startHuntingGround())
+                    {
+
+                    }
+
+                }
                 return;
             }
         }
@@ -206,35 +214,29 @@ public class HuntingGroundManager
         return true;
     }
 
-    public void CheckEntity(Entity e, boolean player)
+    public void CheckEntity(Entity e)
     {
-        if (player)
+        if (e instanceof Creature)
         {
-            Player p = (Player) e;
             for (HuntingGround hg : huntingGrounds)
             {
-                for (Player pp : hg.hggroup.group)
+                if (hg.isinuse && hg.iswaveactive)
                 {
-                    if (p.getUniqueId() == pp.getUniqueId())
-                    {
-                        hg.reduceGroupLive();
-                        return;
-                    }
+                    hg.clearEnemyList();
                 }
             }
         }
-        else
+    }
+
+    public HuntingGround getHuntingGroundOfPlayer(Player p)
+    {
+        for (HuntingGround hg : huntingGrounds)
         {
-            if (e instanceof Creature)
+            if (hg.hggroup.isPlayerInGroup(p))
             {
-                for (HuntingGround hg : huntingGrounds)
-                {
-                    if (hg.isinuse && hg.iswaveactive)
-                    {
-                        hg.clearEnemyList();
-                    }
-                }
+                return hg;
             }
         }
+        return null;
     }
 }

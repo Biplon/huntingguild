@@ -6,12 +6,6 @@ public class GUIManager
 {
     public static GUIManager instance;
 
-    public HGGUI joingui;
-
-    public HGGUI leavegui;
-
-    public HGGUI editorgui;
-
     public GUIManager()
     {
         instance = this;

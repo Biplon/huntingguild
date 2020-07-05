@@ -4,6 +4,7 @@ import main.java.command.*;
 import main.java.config.ConfigManager;
 import main.java.event.InventoryClick;
 import main.java.event.OnEntityDeath;
+import main.java.event.OnEntityGetDamage;
 import main.java.event.OnPlayerQuit;
 import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
@@ -54,10 +55,11 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("hgsave").setExecutor(new CommandSaveHG());
         this.getCommand("hgmode").setExecutor(new CommandChangeHGMode());
         this.getCommand("hgstartwave").setExecutor(new CommandStartWave());
-        this.getCommand("hgstarthg").setExecutor(new CommandStartHG());
+        this.getCommand("hgstart").setExecutor(new CommandStartHG());
         this.getCommand("hgjoin").setExecutor(new CommandJoinHG());
         this.getCommand("hgleave").setExecutor(new CommandLeaveHG());
         this.getCommand("hgplready").setExecutor(new CommandSetPlayerReady());
+        this.getCommand("hgchangerespawn").setExecutor(new CommandChangeHGPlayerSpawnPoint());
     }
 
     private void regEvents()
@@ -66,6 +68,7 @@ public class HuntingGuild extends JavaPlugin
         pm.registerEvents(new OnEntityDeath(), this);
         pm.registerEvents(new InventoryClick(), this);
         pm.registerEvents(new OnPlayerQuit(), this);
+        pm.registerEvents(new OnEntityGetDamage(), this);
     }
 
     @Override

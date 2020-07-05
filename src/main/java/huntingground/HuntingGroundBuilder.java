@@ -5,6 +5,8 @@ import main.java.group.Group;
 import main.java.huntingground.struct.Spawnpoint;
 import main.java.huntingground.struct.Wave;
 import main.java.huntingground.struct.WaveMonster;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -50,6 +52,7 @@ public class HuntingGroundBuilder
 
         huntinggroundname = cfg.getString("general.huntinggroundname");
         world = cfg.getString("general.world");
+        World w = Bukkit.getWorld(world);
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
         groupinhuntingground = new Group(cfg.getInt("group.maxplayer"));
         grouplifes = cfg.getInt("group.grouplives");
@@ -107,7 +110,7 @@ public class HuntingGroundBuilder
             if (cfg.getString("spawnpoints." + count + ".name") != null)
             {
                 coords = Objects.requireNonNull(cfg.getString("spawnpoints." + count + ".coords")).split(",");
-                mobspawnpoints.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                mobspawnpoints.add(new Spawnpoint(count,w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -123,7 +126,7 @@ public class HuntingGroundBuilder
             if (cfg.getString("playerspawnpoints." + count + ".name") != null)
             {
                 coords = Objects.requireNonNull(cfg.getString("playerspawnpoints." + count + ".coords")).split(",");
-                huntinggroundplayerspawns.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                huntinggroundplayerspawns.add(new Spawnpoint(count,w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -359,11 +362,11 @@ public class HuntingGroundBuilder
         }
         for (int i = 0; i < mobspawnpoints.size(); i++)
         {
-            cfg.set("spawnpoints." + i + ".coords", mobspawnpoints.get(i).posx + "," + mobspawnpoints.get(i).posy + "," + mobspawnpoints.get(i).posz);
+            cfg.set("spawnpoints." + i + ".coords", mobspawnpoints.get(i).loc.getBlockX() + "," + mobspawnpoints.get(i).loc.getBlockY() + "," + mobspawnpoints.get(i).loc.getBlockZ());
         }
         for (int i = 0; i < huntinggroundplayerspawns.size(); i++)
         {
-            cfg.set("playerspawnpoints." + i + ".coords", mobspawnpoints.get(i).posx + "," + mobspawnpoints.get(i).posy + "," + mobspawnpoints.get(i).posz);
+            cfg.set("playerspawnpoints." + i + ".coords", mobspawnpoints.get(i).loc.getBlockX() + "," + mobspawnpoints.get(i).loc.getBlockY() + "," + mobspawnpoints.get(i).loc.getBlockZ());
         }
         for (int i = 0; i < waves.size(); i++)
         {

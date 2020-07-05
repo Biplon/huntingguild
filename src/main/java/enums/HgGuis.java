@@ -5,5 +5,6 @@ public enum HgGuis
     hgjoin,
     hgleave,
     hggroupreadycheck,
-    hgeditor
+    hgeditor,
+    hgcreate
 }

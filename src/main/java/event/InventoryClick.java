@@ -16,7 +16,7 @@ public class InventoryClick implements Listener
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e)
     {
-        if (!e.getView().getTitle().equals("HG:"))
+        if (!e.getView().getTitle().contains("HG:"))
         {
             return;
         }
@@ -36,8 +36,8 @@ public class InventoryClick implements Listener
         {
             if (!HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.isFull())
             {
-                HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.addPlayer(p);
                 p.closeInventory();
+                HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.addPlayer(p);
             }
             else
             {
@@ -48,11 +48,12 @@ public class InventoryClick implements Listener
         else if (hg.equalsIgnoreCase("ready"))
         {
             HuntingGroundManager.getInstance().setPlayerReady(p);
+
             p.closeInventory();
         }
         else if (hg.equalsIgnoreCase("not ready"))
         {
-            p.sendMessage("If you ready type: /plready");
+            p.sendMessage("If you ready type: /hgplready");
             p.closeInventory();
         }
         else if (hg.equalsIgnoreCase("yes leave"))
@@ -71,7 +72,7 @@ public class InventoryClick implements Listener
     @EventHandler
     public void onInventoryClick(final InventoryDragEvent e)
     {
-        if (e.getView().getTitle().equals("HG:"))
+        if (e.getView().getTitle().contains("HG:"))
         {
             e.setCancelled(true);
         }

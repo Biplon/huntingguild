@@ -1,5 +1,7 @@
 package main.java.command;
 
+import main.java.enums.HgGuis;
+import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -51,7 +53,7 @@ public class CommandHuntingGroundCreate implements CommandExecutor
                 }
                 else
                 {
-                    commandSender.sendMessage("No hunting ground can create");
+                    player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hgeditor).getInventory());
                     return true;
                 }
             }

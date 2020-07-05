@@ -16,6 +16,8 @@ public class HGGUI
 
     private final HgGuis mygui;
 
+    private static final ItemStack defaultGuiItem = createGuiItem(Material.BLACK_STAINED_GLASS_PANE," ","");
+
     public HGGUI(HgGuis gui)
     {
         mygui = gui;
@@ -48,7 +50,7 @@ public class HGGUI
                 inv = Bukkit.createInventory(null, 27, "HG: Hunting ground ready check");
                 break;
             case hgeditor:
-                inv = Bukkit.createInventory(null, 54, "HG: Hunting ground editor");
+                inv = Bukkit.createInventory(null, 45, "HG: Editor");
                 break;
         }
     }
@@ -67,6 +69,7 @@ public class HGGUI
                 setReady();
                 break;
             case hgeditor:
+                setCreateHG();
                 break;
         }
     }
@@ -78,12 +81,12 @@ public class HGGUI
             case hgjoin:
             case hgleave:
             case hggroupreadycheck:
+            case hgeditor:
                 for (int i = 0; i < 9; i++)
                 {
-                    inv.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-                    inv.setItem(i + 18, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
+                    inv.setItem(i, defaultGuiItem);
+                    inv.setItem(i + 18, defaultGuiItem);
                 }
-            case hgeditor:
                 break;
         }
 
@@ -92,24 +95,37 @@ public class HGGUI
             case hgjoin:
                 for (int i = 0; i < 9; i++)
                 {
-                    inv.setItem(i + 36, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
+                    inv.setItem(i + 36, defaultGuiItem);
                 }
                 for (int i = 9; i <= 17; i += 2)
                 {
-                    inv.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-                    inv.setItem(i + 18, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
+                    inv.setItem(i, defaultGuiItem);
+                    inv.setItem(i + 18, defaultGuiItem);
                 }
                 break;
             case hgleave:
             case hggroupreadycheck:
-                inv.setItem(13, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
+                inv.setItem(13, defaultGuiItem);
                 for (int i = 9; i < 12; i++)
                 {
-                    inv.setItem(i, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
-                    inv.setItem(i + 6, new ItemStack(Material.BLACK_STAINED_GLASS_PANE));
+                    inv.setItem(i, defaultGuiItem);
+                    inv.setItem(i + 6, defaultGuiItem);
                 }
                 break;
             case hgeditor:
+                for (int i = 0; i < 9; i++)
+                {
+                    inv.setItem(i + 36, defaultGuiItem);
+                }
+                inv.setItem(13, defaultGuiItem);
+                inv.setItem(31, defaultGuiItem);
+                for (int i = 9; i <= 11; i += 1)
+                {
+                    inv.setItem(i, defaultGuiItem);
+                    inv.setItem(i + 6, defaultGuiItem);
+                    inv.setItem(i + 18, defaultGuiItem);
+                    inv.setItem(i + 24,  defaultGuiItem);
+                }
                 break;
         }
     }
@@ -133,7 +149,7 @@ public class HGGUI
             }
             else
             {
-                inv.setItem(i, createGuiItem(Material.BARRIER, "", "", ""));
+                inv.setItem(i, createGuiItem(Material.BARRIER, " ", ""));
             }
 
         }
@@ -153,24 +169,32 @@ public class HGGUI
             }
             else
             {
-                inv.setItem(i, createGuiItem(Material.BARRIER, "", "", ""));
+                inv.setItem(i, createGuiItem(Material.BARRIER," ",""));
             }
         }
     }
 
     private void setLeave()
     {
-        inv.setItem(12, createGuiItem(Material.GREEN_WALL_BANNER, "Yes leave", "", ""));
-        inv.setItem(14, createGuiItem(Material.RED_WOOL, "No", "", ""));
+        inv.setItem(12, createGuiItem(Material.GREEN_WOOL, "Yes leave", ""));
+        inv.setItem(14, createGuiItem(Material.RED_WOOL, "No", ""));
+    }
+
+    private void setCreateHG()
+    {
+        inv.setItem(12, createGuiItem(Material.PAPER, "Create hunting ground", ""));
+        inv.setItem(14, createGuiItem(Material.PAPER, "Create dungeon", "not implement"));
+        inv.setItem(30, createGuiItem(Material.BOOK, "Edit hunting ground", ""));
+        inv.setItem(32, createGuiItem(Material.BOOK, "Edit dungeon", "not implement"));
     }
 
     private void setReady()
     {
-        inv.setItem(12, createGuiItem(Material.GREEN_WALL_BANNER, "Ready", "", ""));
+        inv.setItem(12, createGuiItem(Material.GREEN_WOOL, "Ready", "", ""));
         inv.setItem(14, createGuiItem(Material.RED_WOOL, "Not ready", "", ""));
     }
 
-    private ItemStack createGuiItem(final Material material, final String name, final String... lore)
+    private static ItemStack createGuiItem(final Material material, final String name, final String... lore)
     {
         final ItemStack item = new ItemStack(material, 1);
         final ItemMeta meta = item.getItemMeta();

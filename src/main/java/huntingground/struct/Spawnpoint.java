@@ -1,31 +1,26 @@
 package main.java.huntingground.struct;
 
+import org.bukkit.Location;
+import org.bukkit.World;
+
 public class Spawnpoint
 {
     public final int id;
 
-    public final int posx;
+    public  final Location loc;
 
-    public final int posy;
-
-    public final int posz;
-
-    public Spawnpoint(int id, int posx, int posy, int posz)
+    public Spawnpoint(int id, World world, int posx, int posy, int posz)
     {
         this.id = id;
-        this.posx = posx;
-        this.posy = posy;
-        this.posz = posz;
+        loc = new Location(world,posx,posy,posz);
     }
 
     @Override
     public String toString()
     {
         return "Spawnpoint{" +
-                "  id=" + id +
-                ", posx=" + posx +
-                ", posy=" + posy +
-                ", posz=" + posz +
+                "id=" + id +
+                ", loc=" + loc +
                 '}';
     }
 }

@@ -141,11 +141,14 @@ public class Group
 
     public boolean isPlayerInGroup(Player p)
     {
-        for (Player pl:group)
+        for (Player pl : group)
         {
-            if (pl.getUniqueId() == p.getUniqueId())
+            if (pl != null)
             {
-                return true;
+                if (pl.getUniqueId() == p.getUniqueId())
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -165,6 +168,7 @@ public class Group
     {
         Arrays.fill(group, null);
         Arrays.fill(ready, false);
+        Arrays.fill(loc,null);
     }
 
     public boolean isFull()

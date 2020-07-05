@@ -1,13 +1,17 @@
 package main.java.huntingground;
 
+import main.java.HuntingGuild;
 import main.java.config.ConfigManager;
 import main.java.group.Group;
 import main.java.huntingground.struct.Spawnpoint;
 import main.java.huntingground.struct.Wave;
 import main.java.huntingground.struct.WaveMonster;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Creature;
@@ -41,6 +45,8 @@ public class HuntingGround
 
     private final ArrayList<Spawnpoint> huntinggroundplayerspawns = new ArrayList();
 
+    public Spawnpoint activePlayerSpawnpoint;
+
     public ArrayList<Creature> enemylist = new ArrayList();
 
     public boolean playerowninventory;
@@ -58,9 +64,11 @@ public class HuntingGround
 
         huntinggroundname = cfg.getString("general.huntinggroundname");
         world = cfg.getString("general.world");
+        World w = Bukkit.getWorld(world);
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
         hggroup = new Group(cfg.getInt("group.maxplayer"), this);
         grouplives = cfg.getInt("group.grouplives");
+        grouplivescurrent = grouplives;
 
         boolean isnext = true;
         int count = 0;
@@ -115,7 +123,7 @@ public class HuntingGround
             if (cfg.getString("spawnpoints." + count + ".coords") != null)
             {
                 coords = cfg.getString("spawnpoints." + count + ".coords").split(",");
-                spawnpoints.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                spawnpoints.add(new Spawnpoint(count,w,  Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -130,9 +138,8 @@ public class HuntingGround
         {
             if (cfg.getString("playerspawnpoints." + count + ".coords") != null)
             {
-                Bukkit.getLogger().info(cfg.getString("playerspawnpoints." + count + ".coords"));
                 coords = cfg.getString("playerspawnpoints." + count + ".coords").split(",");
-                huntinggroundplayerspawns.add(new Spawnpoint(count, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                huntinggroundplayerspawns.add(new Spawnpoint(count,w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -140,7 +147,7 @@ public class HuntingGround
                 isnext = false;
             }
         }
-
+        activePlayerSpawnpoint = huntinggroundplayerspawns.get(0);
         isnext = true;
         count = 0;
 
@@ -181,13 +188,11 @@ public class HuntingGround
 
     public void teleportPlayerToHG()
     {
-        Location loc = new Location(Bukkit.getWorld(world), huntinggroundplayerspawns.get(0).posx, huntinggroundplayerspawns.get(0).posy, huntinggroundplayerspawns.get(0).posz);
-
         for (Player p : hggroup.group)
         {
             if (p != null)
             {
-                p.teleport(loc);
+                p.teleport(huntinggroundplayerspawns.get(0).loc);
             }
         }
     }
@@ -214,13 +219,14 @@ public class HuntingGround
         {
             isinuse = true;
 
-            hggroup.savePlayerloc();
-            teleportPlayerToHG();
-
             if (!playerowninventory)
             {
                 hggroup.saveInventory();
             }
+
+            hggroup.savePlayerloc();
+            teleportPlayerToHG();
+
             for (Player p : hggroup.group)
             {
                 if (!playerowninventory)
@@ -232,10 +238,16 @@ public class HuntingGround
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));
                 }
             }
-            grouplivescurrent = grouplives;
+            sendActionbarMessage("First wave in 10 sec");
+            Bukkit.getScheduler().runTaskLaterAsynchronously(HuntingGuild.getInstance(), this::startWave,  200);
             return true;
         }
         return false;
+    }
+
+    public void changePlayerRespawnPoint(int spawnid)
+    {
+        activePlayerSpawnpoint = huntinggroundplayerspawns.get(spawnid);
     }
 
     public void endHuntingGround(boolean win)
@@ -270,9 +282,16 @@ public class HuntingGround
         {
             sendMessage("lose");
         }
+        resetHuntingGround();
+    }
+
+    private void resetHuntingGround()
+    {
         isinuse = false;
         wavecount = 0;
         iswaveactive = false;
+        grouplivescurrent = grouplives;
+        activePlayerSpawnpoint = huntinggroundplayerspawns.get(0);
         hggroup.clearGroup();
     }
 
@@ -297,26 +316,35 @@ public class HuntingGround
 
                 data.put("type", wm.mobname);
                 //  data.put("number", "" + wm.amount);
-                data.put("x", "" + wm.sp.posx);
-                data.put("y", "" + wm.sp.posy);
-                data.put("z", "" + wm.sp.posz);
+                data.put("x", "" + wm.sp.loc.getBlockX());
+                data.put("y", "" + wm.sp.loc.getBlockY());
+                data.put("z", "" + wm.sp.loc.getBlockZ());
                 // data.put("world", world);
                 String formattedString = StrSubstitutor.replace(ConfigManager.spawncommand, data);
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedString);
+                Bukkit.getScheduler().callSyncMethod(HuntingGuild.getInstance(),() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedString));
                 data.clear();
             }
             wavecount++;
-            GetEnemys();
+            Bukkit.getScheduler().callSyncMethod(HuntingGuild.getInstance(), this::getEnemys);
             iswaveactive = true;
+            sendActionbarMessage("Wave started");
         }
     }
 
-    private void GetEnemys()
+    public void initWaveStart()
+    {
+        if (waves.get(wavecount).autostart)
+        {
+            sendActionbarMessage("Wave start in "+ waves.get(wavecount).waveprecountdown +" sec");
+            Bukkit.getScheduler().runTaskLaterAsynchronously(HuntingGuild.getInstance(), this::startWave,  (long)(waves.get(wavecount).waveprecountdown * 20));
+        }
+    }
+
+    private boolean getEnemys()
     {
         for (Spawnpoint sp : spawnpoints)
         {
-            Location EntityArea = new Location(Bukkit.getWorld(world), sp.posx, sp.posy, sp.posz);
-            List<Entity> nearbyEntities = (List<Entity>) Objects.requireNonNull(EntityArea.getWorld()).getNearbyEntities(EntityArea, 15, 15, 15);
+            List<Entity> nearbyEntities = (List<Entity>) Objects.requireNonNull(sp.loc.getWorld()).getNearbyEntities(sp.loc, 15, 15, 15);
             for (Entity e : nearbyEntities)
             {
                 if (e instanceof Creature)
@@ -325,6 +353,7 @@ public class HuntingGround
                 }
             }
         }
+        return true;
     }
 
     public void clearEnemyList()
@@ -346,16 +375,15 @@ public class HuntingGround
         if (enemylist.size() == 0 && iswaveactive)
         {
             iswaveactive = false;
-            sendMessage("wave clear");
+            sendActionbarMessage("wave clear");
             if (wavecount >= waves.size())
             {
-                sendMessage("hg clear");
+                sendActionbarMessage("hg clear");
                 endHuntingGround(true);
             }
-            else if (waves.get(wavecount).autostart)
+            else
             {
-                sendMessage("next wave");
-                startWave();
+                initWaveStart();
             }
         }
     }
@@ -367,6 +395,17 @@ public class HuntingGround
             if (p != null)
             {
                 p.sendMessage(msg);
+            }
+        }
+    }
+
+    public void sendActionbarMessage(String msg)
+    {
+        for (Player p : hggroup.group)
+        {
+            if (p != null)
+            {
+                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(msg));
             }
         }
     }

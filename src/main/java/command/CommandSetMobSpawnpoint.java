@@ -2,6 +2,7 @@ package main.java.command;
 
 import main.java.huntingground.HuntingGroundManager;
 import main.java.huntingground.struct.Spawnpoint;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +43,7 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        Spawnpoint sp = new Spawnpoint(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().size(), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+                        Spawnpoint sp = new Spawnpoint(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getMobspawnpoints().size(), Bukkit.getWorld(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).world), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
                         HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addSpawnpoint(sp);
                         commandSender.sendMessage("Spawnpoint create: " + sp.toString());
                     }
