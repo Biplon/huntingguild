@@ -65,6 +65,14 @@ public class InventoryClick implements Listener
         {
             p.closeInventory();
         }
+
+/*
+        if (hg.contains("Edit: "))
+        {
+            HuntingGroundManager.getInstance().getHuntingGroundBuilder(hg.split(":")[1])
+                e.setCancelled(true);
+        }
+*/
         e.setCancelled(true);
     }
 

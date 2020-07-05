@@ -1,5 +1,6 @@
 package main.java.gui;
 
+import main.java.enums.HgGuiPages;
 import main.java.enums.HgGuis;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.Bukkit;
@@ -24,6 +25,10 @@ public class HGGUI
         createInventory(gui);
         initializeDecoItems(gui);
         initializeClickableItems(gui);
+        if (mygui == HgGuis.hgeditor)
+        {
+
+        }
     }
 
     public Inventory getInventory()
@@ -174,6 +179,36 @@ public class HGGUI
         }
     }
 
+    private void setHgtoedit()
+    {
+        int y = 0;
+        for (int i = 10; i <= 16; i += 2)
+        {
+            if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(y) != null)
+            {
+                inv.setItem(i, createGuiItem(Material.GREEN_DYE,"Edit: "+ HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname));
+                y++;
+            }
+            else
+            {
+                inv.setItem(i, createGuiItem(Material.BARRIER, " ", ""));
+            }
+
+        }
+        for (int i = 28; i <= 34; i += 2)
+        {
+            if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(y) != null)
+            {
+                inv.setItem(i, createGuiItem(Material.GREEN_DYE,"Edit: "+ HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname));
+                y++;
+            }
+            else
+            {
+                inv.setItem(i, createGuiItem(Material.BARRIER, " ", ""));
+            }
+        }
+    }
+
     private void setLeave()
     {
         inv.setItem(12, createGuiItem(Material.GREEN_WOOL, "Yes leave", ""));
@@ -192,6 +227,36 @@ public class HGGUI
     {
         inv.setItem(12, createGuiItem(Material.GREEN_WOOL, "Ready", "", ""));
         inv.setItem(14, createGuiItem(Material.RED_WOOL, "Not ready", "", ""));
+    }
+
+    public void changeMenuPage(HgGuiPages page)
+    {
+        switch (page)
+        {
+            case selecthgtoedit:
+                initializeDecoItems(HgGuis.hgjoin);
+                setHgtoedit();
+                break;
+            case edithgmainmenu:
+                break;
+            case changehgmodetoedit:
+                break;
+            case changehgmodetolive:
+                break;
+            case edithgtools:
+                break;
+            case removehgwave:
+                break;
+            case removehgspawnpointmonster:
+                break;
+            case removehgspawnpointplayer:
+                break;
+            case changehgspawnpointplayer:
+                break;
+            case edithggeneral:
+                break;
+        }
+
     }
 
     private static ItemStack createGuiItem(final Material material, final String name, final String... lore)

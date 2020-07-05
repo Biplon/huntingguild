@@ -147,6 +147,18 @@ public class HuntingGroundManager
         }
     }
 
+    public HuntingGroundBuilder getHuntingGroundBuilder(int index)
+    {
+        if (huntingGroundBuilders.size() > index)
+        {
+            return huntingGroundBuilders.get(index);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public HuntingGroundBuilder getHuntingGroundBuilder(String huntinggroundname)
     {
         for (HuntingGroundBuilder item : huntingGroundBuilders)
