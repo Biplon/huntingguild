@@ -153,6 +153,10 @@ public class HGGUI
                         inv.setItem(i, createGuiItem(Material.RED_DYE, HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname, HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots() + "/" + HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() + "Player", "Own equip: " + HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
                     }
                 }
+                else
+                {
+                    i -=2;
+                }
                 y++;
             }
             else
@@ -175,6 +179,10 @@ public class HGGUI
                     {
                         inv.setItem(i, createGuiItem(Material.RED_DYE, HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname, HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots() + "/" + HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() + "Player", "Own equip: " + HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
                     }
+                }
+                else
+                {
+                    i -=2;
                 }
                 y++;
             }

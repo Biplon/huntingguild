@@ -59,7 +59,7 @@ public class CommandHuntingGroundCommands implements CommandExecutor
                         String commandvalue = "";
                         if (args[args.length - 1].equalsIgnoreCase("remove"))
                         {
-                            for (int i = 1; i < args.length - 1; i++)
+                            for (int i = 2; i < args.length - 1; i++)
                             {
                                 commandvalue += args[i] + " ";
                             }
