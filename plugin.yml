@@ -1,7 +1,7 @@
 name: Huntingguild
 author: Vestri
 description: huntingguild
-version: 0.9
+version: 0.10
 api-version: 1.15
 main: main.java.HuntingGuild
 depend: [PlayertoSql]
