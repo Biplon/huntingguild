@@ -21,6 +21,8 @@ public class HuntingGroundBuilder
 
     public final String world;
 
+    private final boolean modeDungeon;
+
     public Group groupinhuntingground;
 
     private final ArrayList<Spawnpoint> mobspawnpoints = new ArrayList();
@@ -43,6 +45,7 @@ public class HuntingGroundBuilder
     {
         this.huntinggroundname = huntinggroundname;
         this.world = world;
+        modeDungeon = false;
     }
 
     public HuntingGroundBuilder(String pfad)
@@ -53,6 +56,7 @@ public class HuntingGroundBuilder
         huntinggroundname = cfg.getString("general.huntinggroundname");
         world = cfg.getString("general.world");
         World w = Bukkit.getWorld(world);
+        modeDungeon = cfg.getBoolean("general.dungeonmode");
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
         groupinhuntingground = new Group(cfg.getInt("group.maxplayer"));
         grouplifes = cfg.getInt("group.grouplives");
@@ -345,6 +349,7 @@ public class HuntingGroundBuilder
 
         cfg.set("general.huntinggroundname", huntinggroundname);
         cfg.set("general.world", world);
+        cfg.set("general.dungeonmode", modeDungeon);
         cfg.set("inventory.keepplayerinventory", playerowninventory);
         cfg.set("group.maxplayer", groupinhuntingground.group.length);
         cfg.set("group.grouplives", grouplifes);

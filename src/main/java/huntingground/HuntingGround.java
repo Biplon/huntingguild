@@ -37,6 +37,8 @@ public class HuntingGround
     public int grouplives;
     public int grouplivescurrent;
 
+    private final boolean modeDungeon;
+
     private final ArrayList<String> startcommands = new ArrayList();
 
     private final ArrayList<String> huntinggroundlosecommands = new ArrayList();
@@ -65,6 +67,7 @@ public class HuntingGround
         huntinggroundname = cfg.getString("general.huntinggroundname");
         world = cfg.getString("general.world");
         World w = Bukkit.getWorld(world);
+        modeDungeon = cfg.getBoolean("general.dungeonmode");
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
         hggroup = new Group(cfg.getInt("group.maxplayer"), this);
         grouplives = cfg.getInt("group.grouplives");
@@ -184,6 +187,11 @@ public class HuntingGround
     private Spawnpoint getSpawnpoint(int index)
     {
         return spawnpoints.size() >= index ? spawnpoints.get(index) : null;
+    }
+
+    public boolean isDungeonMode()
+    {
+        return modeDungeon;
     }
 
     public void teleportPlayerToHG()
