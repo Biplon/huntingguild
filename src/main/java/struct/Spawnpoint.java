@@ -1,4 +1,4 @@
-package main.java.huntingground.struct;
+package main.java.struct;
 
 import org.bukkit.Location;
 import org.bukkit.World;

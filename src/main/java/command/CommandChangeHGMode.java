@@ -14,7 +14,7 @@ public class CommandChangeHGMode implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgmode"))
+            if (!player.hasPermission("hg.hgbuilder"))
             {
                 return false;
             }

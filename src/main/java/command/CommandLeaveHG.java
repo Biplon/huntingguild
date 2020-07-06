@@ -16,7 +16,7 @@ public class CommandLeaveHG implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgleave"))
+            if (!player.hasPermission("hg.hgplayer"))
             {
                 return false;
             }

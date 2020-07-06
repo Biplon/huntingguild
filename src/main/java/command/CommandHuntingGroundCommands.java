@@ -14,7 +14,7 @@ public class CommandHuntingGroundCommands implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgeditgrouplive"))
+            if (!player.hasPermission("hg.hgbuilder"))
             {
                 return false;
             }

@@ -14,7 +14,7 @@ public class CommandPlayerOwnInventory implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgowninv"))
+            if (!player.hasPermission("hg.hgbuilder"))
             {
                 return false;
             }

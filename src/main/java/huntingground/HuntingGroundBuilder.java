@@ -2,9 +2,9 @@ package main.java.huntingground;
 
 import main.java.HuntingGuild;
 import main.java.group.Group;
-import main.java.huntingground.struct.Spawnpoint;
-import main.java.huntingground.struct.Wave;
-import main.java.huntingground.struct.WaveMonster;
+import main.java.struct.Spawnpoint;
+import main.java.struct.Wave;
+import main.java.struct.WaveMonster;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;

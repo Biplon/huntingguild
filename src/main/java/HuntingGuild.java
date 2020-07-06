@@ -55,7 +55,6 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("hgsave").setExecutor(new CommandSaveHG());
         this.getCommand("hgmode").setExecutor(new CommandChangeHGMode());
         this.getCommand("hgstartwave").setExecutor(new CommandStartWave());
-        this.getCommand("hgstart").setExecutor(new CommandStartHG());
         this.getCommand("hgjoin").setExecutor(new CommandJoinHG());
         this.getCommand("hgleave").setExecutor(new CommandLeaveHG());
         this.getCommand("hgplready").setExecutor(new CommandSetPlayerReady());

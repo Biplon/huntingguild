@@ -14,7 +14,7 @@ public class CommandCreateGroupForHG implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgcreateg"))
+            if (!player.hasPermission("hg.hgbuilder"))
             {
                 return false;
             }

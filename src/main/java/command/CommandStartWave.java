@@ -13,23 +13,20 @@ public class CommandStartWave implements CommandExecutor
     {
         if (commandSender instanceof Player)
         {
-            Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgstartwave"))
+            return true;
+        }
+        else
+        {
+            if (args.length == 1)
             {
-                return false;
-            }
-            else
-            {
-                if (args.length == 1)
+                if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
                 {
-                    if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
-                    {
-                        HuntingGroundManager.getInstance().getHuntingground(args[0]).startWave();
-                    }
-                    return true;
+                    HuntingGroundManager.getInstance().getHuntingground(args[0]).startWave();
                 }
+                return true;
             }
         }
+
         return false;
     }
 }

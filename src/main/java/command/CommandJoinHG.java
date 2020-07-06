@@ -16,12 +16,17 @@ public class CommandJoinHG implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgjoin"))
+            if (!player.hasPermission("hg.hgplayer"))
             {
                 return false;
             }
             else
             {
+                if (HuntingGroundManager.getInstance().getHuntingGroundOfPlayer(player) !=null)
+                {
+                    commandSender.sendMessage("You been already in a group!");
+                    return true;
+                }
                 if (args.length == 0)
                 {
                     player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hgjoin).getInventory());

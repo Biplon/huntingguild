@@ -1,7 +1,7 @@
 package main.java.command;
 
 import main.java.huntingground.HuntingGroundManager;
-import main.java.huntingground.struct.Spawnpoint;
+import main.java.struct.Spawnpoint;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +16,7 @@ public class CommandSetMobSpawnpoint implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgsetmsp"))
+            if (!player.hasPermission("hg.hgbuilder"))
             {
                 return false;
             }

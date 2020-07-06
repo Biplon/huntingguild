@@ -16,38 +16,19 @@ public class CommandSetPlayerReady implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgplready"))
+            if (!player.hasPermission("hg.hgplayer"))
             {
                 return false;
             }
             else
             {
+                if (HuntingGroundManager.getInstance().getHuntingGroundOfPlayer(player) !=null)
+                {
+                    return true;
+                }
                 if (args.length == 0)
                 {
                     player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hggroupreadycheck).getInventory());
-                    return true;
-                }
-                else if (args.length == 1)
-                {
-                    if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
-                    {
-                        if (HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.setPlayerReady(player))
-                        {
-                            if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).isinuse && HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.isFull())
-                            {
-                                HuntingGroundManager.getInstance().getHuntingground(args[0]).startHuntingGround();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        commandSender.sendMessage("No hunting ground found:" + args[0] + " (hunting ground not exist or is not in build mode)");
-                    }
-                    return true;
-                }
-                else
-                {
-                    commandSender.sendMessage("No hunting ground joint");
                     return true;
                 }
             }

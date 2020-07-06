@@ -14,7 +14,7 @@ public class CommandWave implements CommandExecutor
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (!player.hasPermission("hg.hgsetwave"))
+            if (!player.hasPermission("hg.hgbuilder"))
             {
                 return false;
             }

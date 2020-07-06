@@ -6,53 +6,11 @@ api-version: 1.15
 main: main.java.HuntingGuild
 depend: [PlayertoSql]
 permissions:
-  hg.hgeditgrouplive:
-    description: change groupe live
+  hg.hgbuilder:
+    description: buildercommands
     default: op
-  hg.hgeditcommands:
-    description: change hunting ground commands
-    default: op
-  hg.hgcreate:
-    description: create a new hunting ground
-    default: op
-  hg.hgowninv:
-    description: set player own inventory for huntingground
-    default: op
-  hg.hgsetmsp:
-    description: add/remove Spawnpoint for Mobs
-    default: op
-  hg.hgsetpsp:
-    description: add/remove Spawnpoint for Player
-    default: op
-  hg.hgsetwave:
-    description: add/remove wave for Mobs
-    default: op
-  hg.hgsetwavemo:
-    description: add/remove Mobs for wave
-    default: op
-  hg.hgcreateg:
-    description: add group for hunting ground
-    default: op
-  hg.hgsave:
-    description: save hunting ground
-    default: op
-  hg.hgmode:
-    description: change hunting ground mode
-    default: op
-  hg.hgstartwave:
-    description: start wave
-    default: op
-  hg.hgstart:
-    description: start hg
-    default: op
-  hg.hgjoin:
-    description: join hg
-    default: op
-  hg.hgleave:
-    description: leave hg
-    default: op
-  hg.hgplready:
-    description: playerready for hg
+  hg.hgplayer:
+    description: player commands
     default: op
 commands:
   hgeditgrouplive:

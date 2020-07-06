@@ -3,9 +3,9 @@ package main.java.huntingground;
 import main.java.HuntingGuild;
 import main.java.config.ConfigManager;
 import main.java.group.Group;
-import main.java.huntingground.struct.Spawnpoint;
-import main.java.huntingground.struct.Wave;
-import main.java.huntingground.struct.WaveMonster;
+import main.java.struct.Spawnpoint;
+import main.java.struct.Wave;
+import main.java.struct.WaveMonster;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.text.StrSubstitutor;
@@ -315,11 +315,11 @@ public class HuntingGround
                 // "mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}"
 
                 data.put("type", wm.mobname);
-                //  data.put("number", "" + wm.amount);
+                  data.put("number", "" + wm.amount);
                 data.put("x", "" + wm.sp.loc.getBlockX());
                 data.put("y", "" + wm.sp.loc.getBlockY());
                 data.put("z", "" + wm.sp.loc.getBlockZ());
-                // data.put("world", world);
+                 data.put("world", world);
                 String formattedString = StrSubstitutor.replace(ConfigManager.spawncommand, data);
                 Bukkit.getScheduler().callSyncMethod(HuntingGuild.getInstance(),() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedString));
                 data.clear();
