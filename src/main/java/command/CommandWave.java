@@ -37,7 +37,7 @@ public class CommandWave implements CommandExecutor
                     }
                     return true;
                 }
-                else if (args.length == 4)
+                else if (args.length == 3)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
@@ -56,7 +56,7 @@ public class CommandWave implements CommandExecutor
                     }
                     return true;
                 }
-                else if (args.length == 5)
+                else if (args.length == 4)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {

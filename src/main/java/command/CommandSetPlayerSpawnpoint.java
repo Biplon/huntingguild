@@ -39,11 +39,11 @@ public class CommandSetPlayerSpawnpoint implements CommandExecutor
                     }
                     return true;
                 }
-                else if (args.length == 5)
+                else if (args.length == 4)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
-                        Spawnpoint sp = new Spawnpoint(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getPlayerSpawnpoints().size(), Bukkit.getWorld(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).world), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+                        Spawnpoint sp = new Spawnpoint(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getPlayerSpawnpoints().size(), Bukkit.getWorld(HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).world), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
                         HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).addPlayerSpawnpoint(sp);
                         commandSender.sendMessage("Playerspawnpoint create: " + sp.toString());
                     }
@@ -53,7 +53,7 @@ public class CommandSetPlayerSpawnpoint implements CommandExecutor
                     }
                     return true;
                 }
-                else if (args.length == 6)
+                else if (args.length == 5)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {

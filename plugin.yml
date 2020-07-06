@@ -18,7 +18,7 @@ commands:
     usage: /hgeditgrouplive <huntingroundname> [lives]
   hgeditcommands:
     description: add/remove hunting ground commands. Playervariable in Command %player%. Commands without /
-    usage: /hgeditcommands <huntingroundname> <win/lose/equip> [command] [remove]
+    usage: /hgeditcommands <huntingroundname> <win/lose/start> [command] [remove]
   hgcreate:
     description: create a new hunting ground
     usage: /hgcreate <huntingroundname> <world>
