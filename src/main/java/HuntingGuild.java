@@ -22,7 +22,6 @@ public class HuntingGuild extends JavaPlugin
         instance = this;
         new ConfigManager();
         new HuntingGroundManager();
-        new GUIManager();
         try
         {
             ConfigManager.loadConfig();
@@ -38,6 +37,7 @@ public class HuntingGuild extends JavaPlugin
         HuntingGroundManager.getInstance().loadHuntingGrounds();
         Bukkit.getLogger().info("[HuntingGuild] hunting grounds loaded!");
         regEvents();
+        new GUIManager();
         Bukkit.getLogger().info("[HuntingGuild] has been enabled!");
     }
 

@@ -1,6 +1,9 @@
 package main.java.event;
 
+import main.java.enums.HgGuis;
+import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,6 +46,31 @@ public class InventoryClick implements Listener
             {
                 p.sendMessage("Group full! For: " + hg);
                 e.setCancelled(true);
+            }
+        }
+        else if (hg.contains("page"))
+        {
+            if (hg.contains("Next"))
+            {
+                if (e.getView().getTitle().contains("dungeon"))
+                {
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.dujoin,e.getInventory(),true));
+                }
+                else if (e.getView().getTitle().contains("hunting"))
+                {
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.hgjoin,e.getInventory(),true));
+                }
+            }
+            else
+            {
+                if (e.getView().getTitle().contains("dungeon"))
+                {
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.dujoin,e.getInventory(),false));
+                }
+                else if (e.getView().getTitle().contains("hunting"))
+                {
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.hgjoin,e.getInventory(),false));
+                }
             }
         }
         else if (hg.equalsIgnoreCase("ready"))

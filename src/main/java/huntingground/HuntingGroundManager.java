@@ -16,7 +16,9 @@ public class HuntingGroundManager
     static HuntingGroundManager instance;
 
     private final ArrayList<HuntingGround> huntingGrounds = new ArrayList();
+    private final ArrayList<HuntingGround> dungeons = new ArrayList();
     private final ArrayList<HuntingGroundBuilder> huntingGroundBuilders = new ArrayList();
+
 
     public HuntingGroundManager()
     {
@@ -55,7 +57,15 @@ public class HuntingGroundManager
 
         for (String s : result)
         {
-            huntingGrounds.add(new HuntingGround(s));
+            HuntingGround tmp = new HuntingGround(s);
+            if (tmp.isDungeonMode())
+            {
+                dungeons.add(tmp);
+            }
+            else
+            {
+                huntingGrounds.add(tmp);
+            }
         }
     }
 
@@ -88,12 +98,28 @@ public class HuntingGroundManager
                 return item;
             }
         }
+        for (HuntingGround item : dungeons)
+        {
+            assert item.huntinggroundname != null;
+            if (item.huntinggroundname.equals(huntinggroundname))
+            {
+                return item;
+            }
+        }
         return null;
     }
 
     public boolean existHG(String huntinggroundname)
     {
         for (HuntingGround item : huntingGrounds)
+        {
+            assert item.huntinggroundname != null;
+            if (item.huntinggroundname.equals(huntinggroundname))
+            {
+                return true;
+            }
+        }
+        for (HuntingGround item : dungeons)
         {
             assert item.huntinggroundname != null;
             if (item.huntinggroundname.equals(huntinggroundname))
@@ -121,11 +147,34 @@ public class HuntingGroundManager
                 return;
             }
         }
+        for (HuntingGround hg : dungeons)
+        {
+            if (hg.hggroup.isPlayerInGroup(p))
+            {
+                if (hg.hggroup.setPlayerReady(p))
+                {
+                    if (hg.startHuntingGround())
+                    {
+
+                    }
+
+                }
+                return;
+            }
+        }
     }
 
     public void leavePlayer(Player p, boolean disconnect)
     {
         for (HuntingGround hg : huntingGrounds)
+        {
+            if (hg.hggroup.isPlayerInGroup(p))
+            {
+                hg.hggroup.removePlayer(p, disconnect);
+                return;
+            }
+        }
+        for (HuntingGround hg : dungeons)
         {
             if (hg.hggroup.isPlayerInGroup(p))
             {
@@ -140,6 +189,18 @@ public class HuntingGroundManager
         if (huntingGrounds.size() > index)
         {
             return huntingGrounds.get(index);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public HuntingGround getDungeon(int index)
+    {
+        if (dungeons.size() > index)
+        {
+            return dungeons.get(index);
         }
         else
         {
@@ -182,7 +243,14 @@ public class HuntingGroundManager
                 file = new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml");
                 if (file.renameTo(new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/" + hgname + ".yml")))
                 {
-                    huntingGrounds.remove(getHuntingground(hgname));
+                    if (getHuntingground(hgname).isDungeonMode())
+                    {
+                        dungeons.remove(getHuntingground(hgname));
+                    }
+                    else
+                    {
+                        huntingGrounds.remove(getHuntingground(hgname));
+                    }
                     huntingGroundBuilders.add(new HuntingGroundBuilder(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/" + hgname + ".yml"));
                     return true;
                 }
@@ -204,7 +272,15 @@ public class HuntingGroundManager
                 if (file.renameTo(new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml")))
                 {
                     huntingGroundBuilders.remove(getHuntingGroundBuilder(hgname));
-                    huntingGrounds.add(new HuntingGround(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml"));
+                    if (getHuntingGroundBuilder(hgname).modeDungeon)
+                    {
+                        dungeons.add(new HuntingGround(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml"));
+                    }
+                    else
+                    {
+                        huntingGrounds.add(new HuntingGround(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml"));
+                    }
+
                     return true;
                 }
                 else
@@ -237,6 +313,13 @@ public class HuntingGroundManager
                     hg.clearEnemyList();
                 }
             }
+            for (HuntingGround hg : dungeons)
+            {
+                if (hg.isinuse && hg.iswaveactive)
+                {
+                    hg.clearEnemyList();
+                }
+            }
         }
     }
 
@@ -249,6 +332,23 @@ public class HuntingGroundManager
                 return hg;
             }
         }
+        for (HuntingGround hg : dungeons)
+        {
+            if (hg.hggroup.isPlayerInGroup(p))
+            {
+                return hg;
+            }
+        }
         return null;
+    }
+
+    public int getHuntingrounds()
+    {
+        return huntingGrounds.size();
+    }
+
+    public int getDungeons()
+    {
+        return dungeons.size();
     }
 }

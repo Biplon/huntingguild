@@ -28,7 +28,7 @@ public class CommandSetPlayerReady implements CommandExecutor
                 }
                 if (args.length == 0)
                 {
-                    player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hggroupreadycheck).getInventory());
+                    player.openInventory(GUIManager.getInstance().createGUI(HgGuis.hggroupreadycheck));
                     return true;
                 }
             }

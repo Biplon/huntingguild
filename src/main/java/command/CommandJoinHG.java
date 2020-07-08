@@ -29,7 +29,7 @@ public class CommandJoinHG implements CommandExecutor
                 }
                 if (args.length == 0)
                 {
-                    player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hgjoin).getInventory());
+                    player.openInventory(GUIManager.getInstance().createGUI(HgGuis.hgjoin));
                     return true;
                 }
                 else if (args.length == 1)

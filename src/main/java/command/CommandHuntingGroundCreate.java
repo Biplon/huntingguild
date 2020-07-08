@@ -53,7 +53,7 @@ public class CommandHuntingGroundCreate implements CommandExecutor
                 }
                 else
                 {
-                    player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hgeditor).getInventory());
+                    player.openInventory(GUIManager.getInstance().createGUI(HgGuis.hgeditor));
                     return true;
                 }
             }

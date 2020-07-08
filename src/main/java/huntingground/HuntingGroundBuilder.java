@@ -21,7 +21,7 @@ public class HuntingGroundBuilder
 
     public final String world;
 
-    private final boolean modeDungeon;
+    public final boolean modeDungeon;
 
     public Group groupinhuntingground;
 

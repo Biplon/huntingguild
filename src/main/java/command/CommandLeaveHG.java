@@ -24,7 +24,7 @@ public class CommandLeaveHG implements CommandExecutor
             {
                 if (args.length == 0)
                 {
-                    player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hgleave).getInventory());
+                    player.openInventory(GUIManager.getInstance().createGUI(HgGuis.hgleave));
                     return true;
                 }
                 else if (args.length == 1)

@@ -106,7 +106,7 @@ public class Group
     {
         for (Player p: group)
         {
-            p.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.hggroupreadycheck).getInventory());
+            p.openInventory(GUIManager.getInstance().createGUI(HgGuis.hggroupreadycheck));
         }
     }
 

@@ -29,7 +29,7 @@ public class CommandJoinDU implements CommandExecutor
                 }
                 if (args.length == 0)
                 {
-                    player.openInventory(GUIManager.getInstance().getGUIInstance(HgGuis.dujoin).getInventory());
+                    player.openInventory(GUIManager.getInstance().createGUI(HgGuis.dujoin));
                     return true;
                 }
                 else if (args.length == 1)
