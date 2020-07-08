@@ -64,3 +64,6 @@ commands:
   hgchangerespawn:
     description: change the player respawnpoint in the hunting ground on runtime (only over console command)
     usage: /hgplready <huntingroundname> <playerspawnpointid>
+  dujoin:
+    description: join du
+    usage: /dujoin <huntingroundname>

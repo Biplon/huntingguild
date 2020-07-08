@@ -5,6 +5,7 @@ import main.java.enums.HgGuis;
 import main.java.huntingground.HuntingGroundManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -48,6 +49,9 @@ public class HGGUI
             case hgjoin:
                 inv = Bukkit.createInventory(null, 45, "HG: Join hunting ground");
                 break;
+            case dujoin:
+                inv = Bukkit.createInventory(null, 45, "HG: Join dungeon");
+                break;
             case hgleave:
                 inv = Bukkit.createInventory(null, 27, "HG: Leave hunting ground");
                 break;
@@ -67,6 +71,9 @@ public class HGGUI
             case hgjoin:
                 setHg();
                 break;
+            case dujoin:
+                setDu();
+                break;
             case hgleave:
                 setLeave();
                 break;
@@ -84,6 +91,7 @@ public class HGGUI
         switch (gui)
         {
             case hgjoin:
+            case dujoin:
             case hgleave:
             case hggroupreadycheck:
             case hgeditor:
@@ -98,6 +106,7 @@ public class HGGUI
         switch (gui)
         {
             case hgjoin:
+            case dujoin:
                 for (int i = 0; i < 9; i++)
                 {
                     inv.setItem(i + 36, defaultGuiItem);
@@ -193,6 +202,63 @@ public class HGGUI
         }
     }
 
+    private void setDu()
+    {
+        int y = 0;
+        for (int i = 10; i <= 16; i += 2)
+        {
+            if (HuntingGroundManager.getInstance().getHuntingground(y) != null)
+            {
+                if (HuntingGroundManager.getInstance().getHuntingground(y).isDungeonMode())
+                {
+                    if (!HuntingGroundManager.getInstance().getHuntingground(y).isinuse)
+                    {
+                        inv.setItem(i, createGuiItem(Material.GREEN_DYE, HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname, HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots() + "/" + HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() + "Player", "Own equip: " + HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                    }
+                    else
+                    {
+                        inv.setItem(i, createGuiItem(Material.RED_DYE, HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname, HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots() + "/" + HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() + "Player", "Own equip: " + HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                    }
+                }
+                else
+                {
+                    i -=2;
+                }
+                y++;
+            }
+            else
+            {
+                inv.setItem(i, createGuiItem(Material.BARRIER, " ", ""));
+            }
+
+        }
+        for (int i = 28; i <= 34; i += 2)
+        {
+            if (HuntingGroundManager.getInstance().getHuntingground(y) != null)
+            {
+                if (HuntingGroundManager.getInstance().getHuntingground(y).isDungeonMode())
+                {
+                    if (!HuntingGroundManager.getInstance().getHuntingground(y).isinuse)
+                    {
+                        inv.setItem(i, createGuiItem(Material.GREEN_DYE, HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname, HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots() + "/" + HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() + "Player", "Own equip: " + HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                    }
+                    else
+                    {
+                        inv.setItem(i, createGuiItem(Material.RED_DYE, HuntingGroundManager.getInstance().getHuntingground(y).huntinggroundname, HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getFullSlots() + "/" + HuntingGroundManager.getInstance().getHuntingground(y).hggroup.getGroupSize() + "Player", "Own equip: " + HuntingGroundManager.getInstance().getHuntingground(y).playerowninventory));
+                    }
+                }
+                else
+                {
+                    i -=2;
+                }
+                y++;
+            }
+            else
+            {
+                inv.setItem(i, createGuiItem(Material.BARRIER," ",""));
+            }
+        }
+    }
     private void setHgtoedit()
     {
         int y = 0;

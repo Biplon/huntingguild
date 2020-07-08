@@ -47,7 +47,7 @@ public class Group
                     group[i] = p;
                     if (group.length > 1)
                     {
-                        myhg.sendMessage(p.getDisplayName() +"Joint the hunting group");
+                        myhg.sendMessage(p.getDisplayName() +" joint the group");
                         myhg.sendMessage( "Group: " + getFullSlots()+ "/" + getGroupSize());
                         myhg.sendMessage( "You Need: " + getFreeGroupSlots()+ " Player to start");
                     }
