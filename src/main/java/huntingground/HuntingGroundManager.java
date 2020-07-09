@@ -138,7 +138,7 @@ public class HuntingGroundManager
             {
                 if (hg.hggroup.setPlayerReady(p))
                 {
-                    if (hg.startHuntingGround())
+                    if (hg.prepareStart())
                     {
 
                     }
@@ -153,7 +153,7 @@ public class HuntingGroundManager
             {
                 if (hg.hggroup.setPlayerReady(p))
                 {
-                    if (hg.startHuntingGround())
+                    if (hg.prepareStart())
                     {
 
                     }

@@ -1,6 +1,6 @@
 package main.java.group;
 
-import main.java.api.Playermanagement;
+import main.java.api.PlayerManagement;
 import main.java.enums.HgGuis;
 import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGround;
@@ -80,10 +80,10 @@ public class Group
                     myhg.teleportPlayerBack(p,loc[i]);
                     if (!disconnect)
                     {
-                        Playermanagement.getInstance().loadPlayerIgnoreDisableSync(p);
+                        PlayerManagement.getInstance().loadPlayerIgnoreDisableSync(p);
                     }
-                    Playermanagement.getInstance().enablePlayerLoad(p);
-                    Playermanagement.getInstance().enablePlayerSave(p);
+                    PlayerManagement.getInstance().enablePlayerLoad(p);
+                    PlayerManagement.getInstance().enablePlayerSave(p);
                 }
                 group[i] = null;
                 ready[i] = false;
@@ -96,6 +96,10 @@ public class Group
                         myhg.sendMessage( "Group: " + getFullSlots()+ "/" + getGroupSize());
                         myhg.sendMessage( "You Need: " + getFreeGroupSlots()+ " Player to start");
                     }
+                }
+                if (getFreeGroupSlots() == getGroupSize())
+                {
+                    myhg.resetHuntingGround();
                 }
                 return;
             }
@@ -133,9 +137,9 @@ public class Group
     {
         for (Player p : group)
         {
-            Playermanagement.getInstance().savePlayerIgnoreDisableSync(p);
-            Playermanagement.getInstance().disablePlayerSave(p);
-            Playermanagement.getInstance().disablePlayerLoad(p);
+            PlayerManagement.getInstance().savePlayerIgnoreDisableSync(p);
+            PlayerManagement.getInstance().disablePlayerSave(p);
+            PlayerManagement.getInstance().disablePlayerLoad(p);
         }
     }
 
@@ -158,9 +162,9 @@ public class Group
     {
         for (Player p : group)
         {
-            Playermanagement.getInstance().loadPlayerIgnoreDisableSync(p);
-            Playermanagement.getInstance().enablePlayerLoad(p);
-            Playermanagement.getInstance().enablePlayerSave(p);
+            PlayerManagement.getInstance().loadPlayerIgnoreDisableSync(p);
+            PlayerManagement.getInstance().enablePlayerLoad(p);
+            PlayerManagement.getInstance().enablePlayerSave(p);
         }
     }
 

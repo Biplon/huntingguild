@@ -126,7 +126,7 @@ public class HuntingGround
             if (cfg.getString("spawnpoints." + count + ".coords") != null)
             {
                 coords = cfg.getString("spawnpoints." + count + ".coords").split(",");
-                spawnpoints.add(new Spawnpoint(count,w,  Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                spawnpoints.add(new Spawnpoint(count, w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -142,7 +142,7 @@ public class HuntingGround
             if (cfg.getString("playerspawnpoints." + count + ".coords") != null)
             {
                 coords = cfg.getString("playerspawnpoints." + count + ".coords").split(",");
-                huntinggroundplayerspawns.add(new Spawnpoint(count,w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+                huntinggroundplayerspawns.add(new Spawnpoint(count, w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
             else
@@ -221,7 +221,24 @@ public class HuntingGround
         p.teleport(loc);
     }
 
-    public boolean startHuntingGround()
+    public void startHuntingGround()
+    {
+        for (Player p : hggroup.group)
+        {
+            if (!playerowninventory)
+            {
+                p.getInventory().clear();
+            }
+            for (String s : startcommands)
+            {
+                Bukkit.getScheduler().callSyncMethod(HuntingGuild.getInstance(), () ->Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName())));
+            }
+        }
+        sendActionbarMessage("First wave in 10 sec");
+        Bukkit.getScheduler().runTaskLaterAsynchronously(HuntingGuild.getInstance(), this::startWave, 200);
+    }
+
+    public boolean prepareStart()
     {
         if (hggroup.isFull())
         {
@@ -231,23 +248,10 @@ public class HuntingGround
             {
                 hggroup.saveInventory();
             }
-
             hggroup.savePlayerloc();
             teleportPlayerToHG();
 
-            for (Player p : hggroup.group)
-            {
-                if (!playerowninventory)
-                {
-                    p.getInventory().clear();
-                }
-                for (String s : startcommands)
-                {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));
-                }
-            }
-            sendActionbarMessage("First wave in 10 sec");
-            Bukkit.getScheduler().runTaskLaterAsynchronously(HuntingGuild.getInstance(), this::startWave,  200);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(HuntingGuild.getInstance(), this::startHuntingGround, 2);
             return true;
         }
         return false;
@@ -293,7 +297,7 @@ public class HuntingGround
         resetHuntingGround();
     }
 
-    private void resetHuntingGround()
+    public void resetHuntingGround()
     {
         isinuse = false;
         wavecount = 0;
@@ -323,13 +327,13 @@ public class HuntingGround
                 // "mo lspawn ${type} ${number} ${x} ${y} ${z} ${world}"
 
                 data.put("type", wm.mobname);
-                  data.put("number", "" + wm.amount);
+                data.put("number", "" + wm.amount);
                 data.put("x", "" + wm.sp.loc.getBlockX());
                 data.put("y", "" + wm.sp.loc.getBlockY());
                 data.put("z", "" + wm.sp.loc.getBlockZ());
-                 data.put("world", world);
+                data.put("world", world);
                 String formattedString = StrSubstitutor.replace(ConfigManager.spawncommand, data);
-                Bukkit.getScheduler().callSyncMethod(HuntingGuild.getInstance(),() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedString));
+                Bukkit.getScheduler().callSyncMethod(HuntingGuild.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedString));
                 data.clear();
             }
             wavecount++;
@@ -343,8 +347,8 @@ public class HuntingGround
     {
         if (waves.get(wavecount).autostart)
         {
-            sendActionbarMessage("Wave start in "+ waves.get(wavecount).waveprecountdown +" sec");
-            Bukkit.getScheduler().runTaskLaterAsynchronously(HuntingGuild.getInstance(), this::startWave,  (long)(waves.get(wavecount).waveprecountdown * 20));
+            sendActionbarMessage("Wave start in " + waves.get(wavecount).waveprecountdown + " sec");
+            Bukkit.getScheduler().runTaskLaterAsynchronously(HuntingGuild.getInstance(), this::startWave, (long) (waves.get(wavecount).waveprecountdown * 20));
         }
     }
 
