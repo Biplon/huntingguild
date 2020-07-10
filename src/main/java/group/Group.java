@@ -13,27 +13,31 @@ public class Group
 {
     public HuntingGround myhg;
 
+    public int minsize;
+
     public Player[] group;
 
     public boolean[] ready;
 
     public Location[] loc;
 
-    public Group(int groupSize)
+    public Group(int groupSize,int minsize)
     {
         group = new Player[groupSize];
         ready = new boolean[groupSize];
         loc = new Location[groupSize];
         Arrays.fill(ready, false);
+        this.minsize = minsize;
     }
 
-    public Group(int groupSize,HuntingGround hg)
+    public Group(int groupSize,int minsize, HuntingGround hg)
     {
         myhg = hg;
         group = new Player[groupSize];
         ready = new boolean[groupSize];
         loc = new Location[groupSize];
         Arrays.fill(ready, false);
+        this.minsize = minsize;
     }
 
     public void addPlayer(Player p)
@@ -50,6 +54,10 @@ public class Group
                         myhg.sendMessage(p.getDisplayName() +" joint the group");
                         myhg.sendMessage( "Group: " + getFullSlots()+ "/" + getGroupSize());
                         myhg.sendMessage( "You Need: " + getFreeGroupSlots()+ " Player to start");
+                    }
+                    if (groupMinSizeReached())
+                    {
+                        myhg.sendMessageWithClickEvent("You have the min Group size. Do you want to start ?","/hgstartreadycheck",true);
                     }
                     if (isFull())
                     {
@@ -165,6 +173,18 @@ public class Group
             PlayerManagement.getInstance().loadPlayerIgnoreDisableSync(p);
             PlayerManagement.getInstance().enablePlayerLoad(p);
             PlayerManagement.getInstance().enablePlayerSave(p);
+        }
+    }
+
+    public boolean groupMinSizeReached()
+    {
+        if (minsize < getGroupSize() && getFullSlots() >= minsize)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

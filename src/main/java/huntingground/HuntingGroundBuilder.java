@@ -58,7 +58,7 @@ public class HuntingGroundBuilder
         World w = Bukkit.getWorld(world);
         modeDungeon = cfg.getBoolean("general.dungeonmode");
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
-        groupinhuntingground = new Group(cfg.getInt("group.maxplayer"));
+        groupinhuntingground = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"));
         grouplifes = cfg.getInt("group.grouplives");
 
         boolean isnext = true;
@@ -256,11 +256,11 @@ public class HuntingGroundBuilder
         return item;
     }
 
-    public boolean setGroupinhuntingground(String size)
+    public boolean setGroupinhuntingground(String size,String minsize)
     {
         try
         {
-            this.groupinhuntingground = new Group(Integer.parseInt(size));
+            this.groupinhuntingground = new Group(Integer.parseInt(size),Integer.parseInt(minsize));
             return true;
         }
         catch (NumberFormatException ex)
@@ -352,6 +352,7 @@ public class HuntingGroundBuilder
         cfg.set("general.dungeonmode", modeDungeon);
         cfg.set("inventory.keepplayerinventory", playerowninventory);
         cfg.set("group.maxplayer", groupinhuntingground.group.length);
+        cfg.set("group.minplayer", groupinhuntingground.minsize);
         cfg.set("group.grouplives", grouplifes);
         for (int i = 0; i < equipcommands.size(); i++)
         {

@@ -67,3 +67,6 @@ commands:
   dujoin:
     description: join du
     usage: /dujoin <huntingroundname>
+  hgstartreadycheck:
+    description: start readycheck
+    usage: /hgstartreadycheck <huntingroundname>

@@ -7,6 +7,7 @@ import main.java.struct.Spawnpoint;
 import main.java.struct.Wave;
 import main.java.struct.WaveMonster;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.Bukkit;
@@ -69,7 +70,7 @@ public class HuntingGround
         World w = Bukkit.getWorld(world);
         modeDungeon = cfg.getBoolean("general.dungeonmode");
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
-        hggroup = new Group(cfg.getInt("group.maxplayer"), this);
+        hggroup = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"), this);
         grouplives = cfg.getInt("group.grouplives");
         grouplivescurrent = grouplives;
 
@@ -398,6 +399,12 @@ public class HuntingGround
                 initWaveStart();
             }
         }
+    }
+
+    public void sendMessageWithClickEvent(String clickabletext, String command,boolean leader)
+    {
+        TextComponent message = new TextComponent( clickabletext );
+        message.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND, command ) );
     }
 
     public void sendMessage(String msg)
