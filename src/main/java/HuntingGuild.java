@@ -8,6 +8,7 @@ import main.java.event.OnEntityGetDamage;
 import main.java.event.OnPlayerQuit;
 import main.java.gui.GUIManager;
 import main.java.huntingground.HuntingGroundManager;
+import main.java.playermanager.PlayerVisitInstanceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
@@ -34,6 +35,7 @@ public class HuntingGuild extends JavaPlugin
         regCommands();
         Bukkit.getLogger().info("[HuntingGuild] commands registered!");
         Bukkit.getLogger().info("[HuntingGuild] load hunting grounds!");
+        new PlayerVisitInstanceManager();
         HuntingGroundManager.getInstance().loadHuntingGrounds();
         Bukkit.getLogger().info("[HuntingGuild] hunting grounds loaded!");
         regEvents();
@@ -61,6 +63,7 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("hgplready").setExecutor(new CommandSetPlayerReady());
         this.getCommand("hgchangerespawn").setExecutor(new CommandChangeHGPlayerSpawnPoint());
         this.getCommand("hgstartreadycheck").setExecutor(new CommandStartReadyCheck());
+        this.getCommand("hgsetvisits").setExecutor(new CommandSetVisitsPerHour());
     }
 
     private void regEvents()

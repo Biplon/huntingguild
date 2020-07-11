@@ -41,6 +41,8 @@ public class HuntingGroundBuilder
 
     public boolean playerowninventory;
 
+    public int visitsPerHour;
+
     public HuntingGroundBuilder(String huntinggroundname, String world)
     {
         this.huntinggroundname = huntinggroundname;
@@ -60,7 +62,7 @@ public class HuntingGroundBuilder
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
         groupinhuntingground = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"), cfg.getBoolean("group.leavedeath"));
         grouplifes = cfg.getInt("group.grouplives");
-
+        visitsPerHour  = cfg.getInt("group.visitsperhour");
         boolean isnext = true;
         int count = 0;
         while (isnext)
@@ -355,6 +357,7 @@ public class HuntingGroundBuilder
         cfg.set("group.minplayer", groupinhuntingground.minsize);
         cfg.set("group.grouplives", grouplifes);
         cfg.set("group.leavedeath", groupinhuntingground.playerLeaveByDead);
+        cfg.set("group.visitsperhour", visitsPerHour);
         for (int i = 0; i < startcommands.size(); i++)
         {
             cfg.set("commands.playerjoin." + i, startcommands.get(i));

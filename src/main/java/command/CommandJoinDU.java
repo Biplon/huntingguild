@@ -22,7 +22,7 @@ public class CommandJoinDU implements CommandExecutor
             }
             else
             {
-                if (HuntingGroundManager.getInstance().getHuntingGroundOfPlayer(player) !=null)
+                if (HuntingGroundManager.getInstance().getHuntingGroundOfPlayer(player) != null)
                 {
                     commandSender.sendMessage("You been already in a group!");
                     return true;
@@ -34,19 +34,26 @@ public class CommandJoinDU implements CommandExecutor
                 }
                 else if (args.length == 1)
                 {
-                    if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
+                    if (HuntingGroundManager.getInstance().getHuntingground(args[0]).canJoin(player.getUniqueId()))
                     {
-                        if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.isFull())
+                        if (HuntingGroundManager.getInstance().getHuntingground(args[0]) != null)
                         {
-                            HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.addPlayer(player);
-                            commandSender.sendMessage("Group joined! For: " + args[0]);
+                            if (!HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.isFull())
+                            {
+                                HuntingGroundManager.getInstance().getHuntingground(args[0]).hggroup.addPlayer(player);
+                                commandSender.sendMessage("Group joined! For: " + args[0]);
+                            }
+                            else
+                            {
+                                commandSender.sendMessage("Group full! For: " + args[0]);
+                            }
                         }
-                        else
-                        {
-                            commandSender.sendMessage("Group full! For: " + args[0]);
-                        }
-                        return true;
                     }
+                    else
+                    {
+                        commandSender.sendMessage("Visits per hour full!");
+                    }
+                    return true;
                 }
             }
         }

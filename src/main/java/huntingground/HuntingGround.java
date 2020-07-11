@@ -3,6 +3,7 @@ package main.java.huntingground;
 import main.java.HuntingGuild;
 import main.java.config.ConfigManager;
 import main.java.group.Group;
+import main.java.playermanager.PlayerVisitInstanceManager;
 import main.java.struct.Spawnpoint;
 import main.java.struct.Wave;
 import main.java.struct.WaveMonster;
@@ -60,12 +61,15 @@ public class HuntingGround
 
     private int wavecount;
 
+    public int visitsPerHour;
+
     public HuntingGround(String configpfad)
     {
         File f = new File(configpfad);
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(f);
 
         huntinggroundname = cfg.getString("general.huntinggroundname");
+        PlayerVisitInstanceManager.getInstance().addInstance(huntinggroundname);
         world = cfg.getString("general.world");
         World w = Bukkit.getWorld(world);
         modeDungeon = cfg.getBoolean("general.dungeonmode");
@@ -73,7 +77,7 @@ public class HuntingGround
         hggroup = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"), cfg.getBoolean("group.leavedeath"), this);
         grouplives = cfg.getInt("group.grouplives");
         grouplivescurrent = grouplives;
-
+        visitsPerHour  = cfg.getInt("group.visitsperhour");
         boolean isnext = true;
         int count = 0;
         while (isnext)
@@ -286,6 +290,7 @@ public class HuntingGround
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("%player%", p.getName()));
                 }
             }
+            PlayerVisitInstanceManager.getInstance().addPlayer(p.getUniqueId(),huntinggroundname);
         }
         if (win)
         {
@@ -296,6 +301,18 @@ public class HuntingGround
             sendMessage("lose");
         }
         resetHuntingGround();
+    }
+
+    public boolean canJoin(UUID pid)
+    {
+        if (PlayerVisitInstanceManager.getInstance().getVisits(pid,huntinggroundname) < visitsPerHour || visitsPerHour == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void resetHuntingGround()

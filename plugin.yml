@@ -1,7 +1,7 @@
 name: Huntingguild
 author: Vestri
 description: huntingguild
-version: 0.14
+version: 0.15
 api-version: 1.15
 main: main.java.HuntingGuild
 depend: [PlayertoSql]
@@ -70,3 +70,6 @@ commands:
   hgstartreadycheck:
     description: start readycheck
     usage: /hgstartreadycheck <huntingroundname>
+  hgsetvisitsperhour:
+    description: set visits per hour
+    usage: /hgsetvisits <huntingroundname> <count>

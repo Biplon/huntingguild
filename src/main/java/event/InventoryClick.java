@@ -37,14 +37,22 @@ public class InventoryClick implements Listener
 
         if (HuntingGroundManager.getInstance().existHG(hg))
         {
-            if (!HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.isFull())
+            if (HuntingGroundManager.getInstance().getHuntingground(hg).canJoin(p.getUniqueId()))
             {
-                p.closeInventory();
-                HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.addPlayer(p);
+                if (!HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.isFull())
+                {
+                    p.closeInventory();
+                    HuntingGroundManager.getInstance().getHuntingground(hg).hggroup.addPlayer(p);
+                }
+                else
+                {
+                    p.sendMessage("Group full! For: " + hg);
+                    e.setCancelled(true);
+                }
             }
             else
             {
-                p.sendMessage("Group full! For: " + hg);
+                p.sendMessage("Visits per hour full!");
                 e.setCancelled(true);
             }
         }
@@ -54,22 +62,22 @@ public class InventoryClick implements Listener
             {
                 if (e.getView().getTitle().contains("dungeon"))
                 {
-                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.dujoin,e.getInventory(),true));
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.dujoin, e.getInventory(), true));
                 }
                 else if (e.getView().getTitle().contains("hunting"))
                 {
-                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.hgjoin,e.getInventory(),true));
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.hgjoin, e.getInventory(), true));
                 }
             }
             else
             {
                 if (e.getView().getTitle().contains("dungeon"))
                 {
-                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.dujoin,e.getInventory(),false));
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.dujoin, e.getInventory(), false));
                 }
                 else if (e.getView().getTitle().contains("hunting"))
                 {
-                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.hgjoin,e.getInventory(),false));
+                    p.openInventory(GUIManager.getInstance().changeGUIJoinElements(HgGuis.hgjoin, e.getInventory(), false));
                 }
             }
         }
