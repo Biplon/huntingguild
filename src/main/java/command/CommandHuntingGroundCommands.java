@@ -39,7 +39,7 @@ public class CommandHuntingGroundCommands implements CommandExecutor
                                 }
                                 return true;
                             case "start":
-                                for (String item : HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getEquipcommands())
+                                for (String item : HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).getStartcommands())
                                 {
                                     commandSender.sendMessage(item);
                                 }

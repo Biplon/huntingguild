@@ -1,7 +1,7 @@
 name: Huntingguild
 author: Vestri
 description: huntingguild
-version: 0.13
+version: 0.14
 api-version: 1.15
 main: main.java.HuntingGuild
 depend: [PlayertoSql]
@@ -15,7 +15,7 @@ permissions:
 commands:
   hgeditgrouplive:
     description: change/get groupe live
-    usage: /hgeditgrouplive <huntingroundname> [lives]
+    usage: /hgeditgrouplive <huntingroundname> [lives] [leavebydeath]
   hgeditcommands:
     description: add/remove hunting ground commands. Playervariable in Command %player%. Commands without /
     usage: /hgeditcommands <huntingroundname> <win/lose/start> [command] [remove]

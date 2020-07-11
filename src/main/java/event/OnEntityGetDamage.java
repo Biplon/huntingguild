@@ -32,7 +32,7 @@ public class OnEntityGetDamage implements Listener
                     {
                         p.removePotionEffect(effect.getType());
                     }
-                    hg.reduceGroupLive();
+                    hg.reduceGroupLive(p);
                     event.setCancelled(true);
                 }
             }

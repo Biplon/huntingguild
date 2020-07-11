@@ -32,12 +32,12 @@ public class CommandCreateGroupForHG implements CommandExecutor
                     }
                     return true;
                 }
-                else if (args.length == 3)
+                else if (args.length == 4)
                 {
                     if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]) != null)
                     {
 
-                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).setGroupinhuntingground(args[1],args[2]))
+                        if (HuntingGroundManager.getInstance().getHuntingGroundBuilder(args[0]).setGroupinhuntingground(args[1],args[2],Boolean.getBoolean(args[3])))
                         {
 
                             commandSender.sendMessage("Group created. Player size: " + args[1]);

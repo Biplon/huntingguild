@@ -70,7 +70,7 @@ public class HuntingGround
         World w = Bukkit.getWorld(world);
         modeDungeon = cfg.getBoolean("general.dungeonmode");
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
-        hggroup = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"), this);
+        hggroup = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"), cfg.getBoolean("group.leavedeath"), this);
         grouplives = cfg.getInt("group.grouplives");
         grouplivescurrent = grouplives;
 
@@ -308,12 +308,19 @@ public class HuntingGround
         hggroup.clearGroup();
     }
 
-    public void reduceGroupLive()
+    public void reduceGroupLive(Player p)
     {
-        grouplivescurrent--;
-        if (grouplivescurrent <= 0)
+        if (grouplives >0)
         {
-            endHuntingGround(false);
+            grouplivescurrent--;
+            if (grouplivescurrent <= 0)
+            {
+                endHuntingGround(false);
+            }
+        }
+        if (hggroup.playerLeaveByDead)
+        {
+            hggroup.removePlayer(p,false);
         }
     }
 

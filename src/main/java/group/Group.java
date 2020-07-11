@@ -13,6 +13,8 @@ public class Group
 {
     public HuntingGround myhg;
 
+    public boolean playerLeaveByDead;
+
     public int minsize;
 
     public Player[] group;
@@ -21,16 +23,17 @@ public class Group
 
     public Location[] loc;
 
-    public Group(int groupSize,int minsize)
+    public Group(int groupSize,int minsize,boolean leaveDead)
     {
         group = new Player[groupSize];
         ready = new boolean[groupSize];
         loc = new Location[groupSize];
         Arrays.fill(ready, false);
         this.minsize = minsize;
+        playerLeaveByDead = leaveDead;
     }
 
-    public Group(int groupSize,int minsize, HuntingGround hg)
+    public Group(int groupSize,int minsize,boolean leaveDead, HuntingGround hg)
     {
         myhg = hg;
         group = new Player[groupSize];
@@ -38,6 +41,7 @@ public class Group
         loc = new Location[groupSize];
         Arrays.fill(ready, false);
         this.minsize = minsize;
+        playerLeaveByDead = leaveDead;
     }
 
     public void addPlayer(Player p)

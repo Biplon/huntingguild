@@ -31,7 +31,7 @@ public class HuntingGroundBuilder
 
     public int grouplifes;
 
-    private final ArrayList<String> equipcommands = new ArrayList();
+    private final ArrayList<String> startcommands = new ArrayList();
 
     private final ArrayList<String> huntinggroundlosecommands = new ArrayList();
 
@@ -58,7 +58,7 @@ public class HuntingGroundBuilder
         World w = Bukkit.getWorld(world);
         modeDungeon = cfg.getBoolean("general.dungeonmode");
         playerowninventory = cfg.getBoolean("inventory.keepplayerinventory");
-        groupinhuntingground = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"));
+        groupinhuntingground = new Group(cfg.getInt("group.maxplayer"),cfg.getInt("group.minplayer") == 0 ? cfg.getInt("group.maxplayer") : cfg.getInt("group.minplayer"), cfg.getBoolean("group.leavedeath"));
         grouplifes = cfg.getInt("group.grouplives");
 
         boolean isnext = true;
@@ -67,7 +67,7 @@ public class HuntingGroundBuilder
         {
             if (cfg.getString("commands.playerjoin." + count) != null)
             {
-                equipcommands.add(cfg.getString("commands.playerjoin." + count));
+                startcommands.add(cfg.getString("commands.playerjoin." + count));
                 count++;
             }
             else
@@ -201,9 +201,9 @@ public class HuntingGroundBuilder
         this.playerowninventory = playerowninventory;
     }
 
-    public ArrayList<String> getEquipcommands()
+    public ArrayList<String> getStartcommands()
     {
-        return equipcommands;
+        return startcommands;
     }
 
     public ArrayList<String> getHuntinggroundwincommands()
@@ -256,11 +256,11 @@ public class HuntingGroundBuilder
         return item;
     }
 
-    public boolean setGroupinhuntingground(String size,String minsize)
+    public boolean setGroupinhuntingground(String size,String minsize,boolean leavedeath)
     {
         try
         {
-            this.groupinhuntingground = new Group(Integer.parseInt(size),Integer.parseInt(minsize));
+            this.groupinhuntingground = new Group(Integer.parseInt(size),Integer.parseInt(minsize),leavedeath);
             return true;
         }
         catch (NumberFormatException ex)
@@ -317,9 +317,9 @@ public class HuntingGroundBuilder
 
     public void addEquipcommands(String command)
     {
-        if (!equipcommands.contains(command))
+        if (!startcommands.contains(command))
         {
-            equipcommands.add(command);
+            startcommands.add(command);
         }
     }
 
@@ -335,7 +335,7 @@ public class HuntingGroundBuilder
 
     public void removeEquipcommands(String command)
     {
-        equipcommands.remove(command);
+        startcommands.remove(command);
     }
 
     public boolean saveHuntingGround()
@@ -354,9 +354,10 @@ public class HuntingGroundBuilder
         cfg.set("group.maxplayer", groupinhuntingground.group.length);
         cfg.set("group.minplayer", groupinhuntingground.minsize);
         cfg.set("group.grouplives", grouplifes);
-        for (int i = 0; i < equipcommands.size(); i++)
+        cfg.set("group.leavedeath", groupinhuntingground.playerLeaveByDead);
+        for (int i = 0; i < startcommands.size(); i++)
         {
-            cfg.set("commands.playerjoin." + i, equipcommands.get(i));
+            cfg.set("commands.playerjoin." + i, startcommands.get(i));
         }
         for (int i = 0; i < huntinggroundwincommands.size(); i++)
         {
