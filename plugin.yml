@@ -70,6 +70,6 @@ commands:
   hgstartreadycheck:
     description: start readycheck
     usage: /hgstartreadycheck <huntingroundname>
-  hgsetvisitsperhour:
+  hgsetvisits:
     description: set visits per hour
     usage: /hgsetvisits <huntingroundname> <count>
