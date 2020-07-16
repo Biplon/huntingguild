@@ -32,6 +32,13 @@ public class HuntingGroundManager
 
     public void loadHuntingGrounds()
     {
+        File folders = new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds");
+
+        if (!folders.exists())
+        {
+            folders.mkdir();
+        }
+
         File folder = new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/");
 
         if (!folder.exists())
@@ -58,33 +65,43 @@ public class HuntingGroundManager
         for (String s : result)
         {
             HuntingGround tmp = new HuntingGround(s);
-            if (tmp.isDungeonMode())
+            if (!tmp.notload)
             {
-                dungeons.add(tmp);
-            }
-            else
-            {
-                huntingGrounds.add(tmp);
+                if (tmp.isDungeonMode())
+                {
+                    dungeons.add(tmp);
+                }
+                else
+                {
+                    huntingGrounds.add(tmp);
+                }
             }
         }
     }
 
     private static void search(final String pattern, final File folder, List<String> result)
     {
-        for (final File f : Objects.requireNonNull(folder.listFiles()))
+        try
         {
-            if (f.isDirectory())
+            for (final File f : Objects.requireNonNull(folder.listFiles()))
             {
-                search(pattern, f, result);
-            }
-
-            if (f.isFile())
-            {
-                if (f.getName().matches(pattern))
+                if (f.isDirectory())
                 {
-                    result.add(f.getAbsolutePath());
+                    search(pattern, f, result);
+                }
+
+                if (f.isFile())
+                {
+                    if (f.getName().matches(pattern))
+                    {
+                        result.add(f.getAbsolutePath());
+                    }
                 }
             }
+        }
+        catch (Exception e)
+        {
+
         }
     }
 
@@ -271,7 +288,6 @@ public class HuntingGroundManager
                 file = new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/" + hgname + ".yml");
                 if (file.renameTo(new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml")))
                 {
-                    huntingGroundBuilders.remove(getHuntingGroundBuilder(hgname));
                     if (getHuntingGroundBuilder(hgname).modeDungeon)
                     {
                         dungeons.add(new HuntingGround(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml"));
@@ -280,7 +296,7 @@ public class HuntingGroundManager
                     {
                         huntingGrounds.add(new HuntingGround(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/active/" + hgname + ".yml"));
                     }
-
+                    huntingGroundBuilders.remove(getHuntingGroundBuilder(hgname));
                     return true;
                 }
                 else

@@ -84,7 +84,7 @@ public class CommandHuntingGroundCommands implements CommandExecutor
                         }
                         else
                         {
-                            for (int i = 1; i < args.length; i++)
+                            for (int i = 2; i < args.length; i++)
                             {
                                 commandvalue += args[i] + " ";
                             }

@@ -113,9 +113,9 @@ public class HuntingGroundBuilder
 
         while (isnext)
         {
-            if (cfg.getString("spawnpoints." + count + ".name") != null)
+            if (cfg.getString("spawnpoints." + count + ".coords") != null)
             {
-                coords = Objects.requireNonNull(cfg.getString("spawnpoints." + count + ".coords")).split(",");
+                coords = cfg.getString("spawnpoints." + count + ".coords").split(",");
                 mobspawnpoints.add(new Spawnpoint(count,w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
                 count++;
             }
@@ -129,7 +129,7 @@ public class HuntingGroundBuilder
         count = 0;
         while (isnext)
         {
-            if (cfg.getString("playerspawnpoints." + count + ".name") != null)
+            if (cfg.getString("playerspawnpoints." + count + ".coords") != null)
             {
                 coords = Objects.requireNonNull(cfg.getString("playerspawnpoints." + count + ".coords")).split(",");
                 huntinggroundplayerspawns.add(new Spawnpoint(count,w, Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
@@ -144,10 +144,10 @@ public class HuntingGroundBuilder
         isnext = true;
         count = 0;
 
-        boolean isnext2 = true;
-        int count2 = 0;
         while (isnext)
         {
+            boolean isnext2 = true;
+            int count2 = 0;
             if (cfg.getString("waves." + count + ".cooldown") != null)
             {
                 waves.add(new Wave(count, Double.parseDouble(Objects.requireNonNull(cfg.getString("waves." + count + ".cooldown"))), Boolean.parseBoolean(Objects.requireNonNull(cfg.getString("waves." + count + ".autostart")))));
@@ -376,7 +376,7 @@ public class HuntingGroundBuilder
         }
         for (int i = 0; i < huntinggroundplayerspawns.size(); i++)
         {
-            cfg.set("playerspawnpoints." + i + ".coords", mobspawnpoints.get(i).loc.getBlockX() + "," + mobspawnpoints.get(i).loc.getBlockY() + "," + mobspawnpoints.get(i).loc.getBlockZ());
+            cfg.set("playerspawnpoints." + i + ".coords", huntinggroundplayerspawns.get(i).loc.getBlockX() + "," + huntinggroundplayerspawns.get(i).loc.getBlockY() + "," + huntinggroundplayerspawns.get(i).loc.getBlockZ());
         }
         for (int i = 0; i < waves.size(); i++)
         {
