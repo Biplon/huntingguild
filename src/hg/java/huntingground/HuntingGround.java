@@ -18,6 +18,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class HuntingGround
 
     public Spawnpoint activePlayerSpawnpoint;
 
-    public ArrayList<Creature> enemylist = new ArrayList();
+    public ArrayList<Monster> enemylist = new ArrayList();
 
     public boolean playerowninventory;
 
@@ -334,7 +335,17 @@ public class HuntingGround
         iswaveactive = false;
         grouplivescurrent = grouplives;
         activePlayerSpawnpoint = huntinggroundplayerspawns.get(0);
+        killEnemyList();
         hggroup.clearGroup();
+    }
+
+    private void killEnemyList()
+    {
+        for (Monster m: enemylist)
+        {
+            m.remove();
+        }
+        enemylist.clear();
     }
 
     public void reduceGroupLive(Player p)
@@ -396,9 +407,9 @@ public class HuntingGround
             List<Entity> nearbyEntities = (List<Entity>) Objects.requireNonNull(sp.loc.getWorld()).getNearbyEntities(sp.loc, 1, 1, 1);
             for (Entity e : nearbyEntities)
             {
-                if (e instanceof Creature)
+                if (e instanceof Monster)
                 {
-                    enemylist.add((Creature) e);
+                    enemylist.add((Monster) e);
                 }
             }
         }
@@ -407,9 +418,9 @@ public class HuntingGround
 
     public void clearEnemyList()
     {
-        ArrayList<Creature> tmp = new ArrayList<>();
+        ArrayList<Monster> tmp = new ArrayList<>();
         checkIsWaveClear();
-        for (Creature e : enemylist)
+        for (Monster e : enemylist)
         {
             if (!e.isDead())
             {

@@ -64,6 +64,7 @@ public class HuntingGuild extends JavaPlugin
         this.getCommand("hgchangerespawn").setExecutor(new CommandChangeHGPlayerSpawnPoint());
         this.getCommand("hgstartreadycheck").setExecutor(new CommandStartReadyCheck());
         this.getCommand("hgsetvisits").setExecutor(new CommandSetVisitsPerHour());
+        this.getCommand("hgload").setExecutor(new CommandLoadHG());
     }
 
     private void regEvents()

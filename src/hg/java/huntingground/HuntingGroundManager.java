@@ -3,6 +3,7 @@ package hg.java.huntingground;
 import hg.java.HuntingGuild;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -102,6 +103,20 @@ public class HuntingGroundManager
         {
 
         }
+    }
+
+    public boolean loadHuntingGround(String name)
+    {
+        File file = new File(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/"+ name +".yml");
+        if (file.exists())
+        {
+            if (!existHG(name))
+            {
+                huntingGroundBuilders.add(new HuntingGroundBuilder(HuntingGuild.getInstance().getDataFolder() + "/huntinggrounds/buildmode/"+ name +".yml"));
+                return true;
+            }
+        }
+        return false;
     }
 
     public HuntingGround getHuntingground(String huntinggroundname)
@@ -319,7 +334,7 @@ public class HuntingGroundManager
 
     public void CheckEntity(Entity e)
     {
-        if (e instanceof Creature)
+        if (e instanceof Monster)
         {
             for (HuntingGround hg : huntingGrounds)
             {
