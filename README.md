@@ -1,2 +1,1 @@
-# huntingguild
-spigot plugin
+[look here](https://github.com/Biplon/Instances)
